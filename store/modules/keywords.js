@@ -4,25 +4,33 @@ let mutations = {}
 let actions = {}
 
 state = () => ({
-  keywords: []
+  keywords: [],
+  queryKeywords: []
 })
 
 getters = {
   keywords: (state) => state.keywords,
-  findKeywords: (state) => (query) => {
-    return state.keywords
-  }
+  queryKeywords: (state) => state.queryKeywords
 }
 
 mutations = {
   setKeywords: (state, payload) => {
     state.keywords = payload
+  },
+
+  setQueryKeywords: (state, payload) => {
+    state.queryKeywords = payload
   }
 }
 
 actions = {
-  setKeywords(context, payload) {
-    context.commit('setKeywords', payload)
+  async getKeywords(context, query) {
+    try {
+      const response = await this.$axios.get('/api/keywords/')
+      context.commit('setQueryKeywords', response.data)
+    } catch {
+      alert('Error')
+    }
   }
 }
 

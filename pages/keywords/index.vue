@@ -102,7 +102,7 @@ export default {
   border-radius: 8px;
   padding: 8px 12px;
   position: absolute;
-  bottom: 5rem;
+  bottom: 3rem;
   right: 3rem;
   font-weight: 700;
 }
@@ -110,7 +110,7 @@ export default {
 .button-secondary {
   border-radius: 8px;
   position: absolute;
-  bottom: 5rem;
+  bottom: 3rem;
   font-weight: 700;
   left: 3rem;
   border: 0;

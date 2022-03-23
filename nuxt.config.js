@@ -32,7 +32,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
 
   axios: {
@@ -40,7 +41,7 @@ export default {
   },
 
   proxy: {
-    '/api/': {target: 'https://api.track.la.itmo.su/', pathRewrite: {'^/api/': ''}}
+    '/api/': {target: 'https://api-dev.track.la.itmo.su/', pathRewrite: {'^/api/': ''}}
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

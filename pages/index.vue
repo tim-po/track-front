@@ -6,7 +6,8 @@
         <ProfessionCard
           v-for="profession in professions"
           :key="professions.id"
-          :profession="profession"/>
+          :profession="profession"
+          @click="professionChosen(profession)"/>
       </div>
       <b-col class="text-center mt-2">
         <button v-b-modal.modal1 class="profession__button">
@@ -46,9 +47,19 @@ export default {
     ProfessionCard
   },
 
+  created() {
+    this.$store.dispatch('modules/professions/getProfessions')
+  },
+
   computed: {
     professions() {
       return this.$store.getters['modules/professions/professions']
+    }
+  },
+
+  methods: {
+    professionChosen(profession) {
+      this.$store.commit('modules/professions/setSelectedProfession', profession)
     }
   }
 }
@@ -58,7 +69,7 @@ export default {
 .profession__container {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: 11rem;
+  grid-auto-rows: 11.7rem;
   grid-column-gap: 1.5rem;
   grid-row-gap: 1rem;
   padding: 0.5rem 0;

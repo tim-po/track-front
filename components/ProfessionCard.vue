@@ -6,12 +6,12 @@
         <b-row no-gutters>
             <span v-for="keyword in profession.visible_keywords" :key="keyword"
                   class="professionCard__keyword mr-1 mb-2" :style="'background:' + color">
-              {{ keyword }}
+              {{ keyword.text }}
             </span>
         </b-row>
       </b-col>
-      <b-col cols="4" class="text-center" :style="'background-image: url(\'' + profession.icon_link + '\')'">
-        <img :src="profession.icon_link" alt="Profession Image">
+      <b-col cols="4" class="text-center">
+        <img :src="profession.icon" alt="Profession Image">
       </b-col>
     </b-row>
     <p class="mb-0 professionCard__category">{{ profession.category }}</p>
