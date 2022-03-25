@@ -14,7 +14,7 @@
           />
         </button>
       </div>
-      <button v-b-modal.modal1 class="profession__button mb-2">
+      <button v-b-modal.modal1 class="profession__button mb-4">
         Не знаю, что мне подходит
       </button>
     </div>
@@ -78,7 +78,7 @@ export default {
   padding: 0 0;
   height: max-content;
   max-width: 540px;
-  min-width: 440px;
+  min-width: 450px;
   flex-shrink: 0;
 }
 
@@ -93,7 +93,7 @@ export default {
 
   margin-bottom: 24px;
 
-  @media (max-width: 1400px) {
+  @media (max-width: 1430px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
