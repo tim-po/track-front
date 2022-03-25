@@ -14,7 +14,7 @@
           />
         </button>
       </div>
-      <button v-b-modal.modal1 class="profession__button">
+      <button v-b-modal.modal1 class="profession__button mb-2">
         Не знаю, что мне подходит
       </button>
     </div>
@@ -23,7 +23,8 @@
       <img class="modal-image" src="/modal-header.jpg">
       <b-col class="profession__modal">
         <h5 class="modalHeader">Узнай, что подходит тебе лучше всего</h5>
-        <p class="modalText">Не решил, кем хочешь быть? Пройди тест и узнай, какие профессии подходят именно тебе. Просто текст, вообще
+        <p class="modalText">Не решил, кем хочешь быть? Пройди тест и узнай, какие профессии подходят именно тебе.
+          Просто текст, вообще
           надо подумать, нужен ли он здесь</p>
         <b-row no-gutters class="justify-content-end">
           <button @click="$bvModal.hide('modal1')" class="profession__secondary-button mr-2">
@@ -63,14 +64,14 @@ export default {
   methods: {
     professionChosen(profession) {
       this.$store.commit('modules/professions/setSelectedProfession', profession)
-      this.$router.push({ path: 'keywords', query: { id: profession.id } })
+      this.$router.push({path: 'keywords', query: {id: profession.id}})
     }
   }
 }
 </script>
 
 <style lang="scss">
-.professionCardButton{
+.professionCardButton {
   background: none;
   border: none;
   outline: none;
@@ -80,6 +81,7 @@ export default {
   min-width: 440px;
   flex-shrink: 0;
 }
+
 .profession__container {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -106,16 +108,16 @@ export default {
   margin-bottom: 16px;
 }
 
-.modalHeader{
+.modalHeader {
   font-weight: 700;
   margin-bottom: 16px;
 }
 
-.modalText{
+.modalText {
   margin-bottom: 24px;
 }
 
-.professionsContainer{
+.professionsContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;

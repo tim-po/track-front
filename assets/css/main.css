@@ -32,3 +32,19 @@ body {
   font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
 }
+
+:root {
+  --main-color: #1F1F22;
+  --color-1: #7CCBF8;
+  --color-2: #F9CF6B;
+  --color-3: #89D766;
+  --color-4: #ED81C1;
+  --color-5: #C766D7;
+  --color-6: #62CFD7;
+  --color-7: #78A3EC;
+  --color-8: #677CE8;
+  --color-10: #FAB791;
+  --color-11: #646CB4;
+  --gray-100: #F3F3F4;
+  --gray-10: #F8F8F8;
+}
