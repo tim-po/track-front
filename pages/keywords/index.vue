@@ -61,8 +61,13 @@ export default {
 
   computed: {
     profession() {
+      console.log(this.$route.query.id)
       const professionFromStore = this.$store.getters['modules/professions/selectedProfession']
-      return this.$store.getters['modules/professions/selectedProfession'] || this.$store.getters['modules/professions/professions'].find(prof => prof.id === this.$route.query.id)
+      if(professionFromStore){
+        return professionFromStore
+      }
+      console.log(this.$route.query.id)
+      return this.$store.getters['modules/professions/professions'].find(prof => prof.id === +this.$route.query.id)
     }
   }
 }

@@ -308,7 +308,7 @@ actions = {
   async getProfessions(context) {
     try {
       const response = await this.$axios.get('/api/professions/')
-      context.commit('setProfessions', response.data)
+      // context.commit('setProfessions', response.data)
     } catch {
       // alert('Error')
     }

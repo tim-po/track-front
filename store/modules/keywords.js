@@ -4,7 +4,7 @@ let mutations = {}
 let actions = {}
 
 state = () => ({
-  keywords: [],
+  keywords: ['тест', 'тесто'],
   queryKeywords: []
 })
 
