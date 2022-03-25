@@ -1,29 +1,32 @@
 <template>
   <div>
-    <b-col class="p-0">
+    <div class="professionsContainer">
       <h3 class="profession__title">У нас ты можешь стать лучше</h3>
       <div class="profession__container">
-        <ProfessionCard
+        <button
+          class="professionCardButton"
           v-for="profession in professions"
-          :key="professions.id"
-          :profession="profession"
-          @click="professionChosen(profession)"/>
-      </div>
-      <b-col class="text-center mt-2">
-        <button v-b-modal.modal1 class="profession__button">
-          Не знаю, что мне подходит
+          :key="profession.id"
+          v-on:click="professionChosen(profession)"
+        >
+          <ProfessionCard
+            :profession="profession"
+          />
         </button>
-      </b-col>
-    </b-col>
+      </div>
+      <button v-b-modal.modal1 class="profession__button">
+        Не знаю, что мне подходит
+      </button>
+    </div>
 
     <b-modal content-class="main-modal" hide-footer hide-header id="modal1">
       <img class="modal-image" src="/modal-header.jpg">
       <b-col class="profession__modal">
-        <h5>Узнай, что подходит тебе лучше всего</h5>
-        <p>Не решил, кем хочешь быть? Пройди тест и узнай, какие профессии подходят именно тебе. Просто текст, вообще
+        <h5 class="modalHeader">Узнай, что подходит тебе лучше всего</h5>
+        <p class="modalText">Не решил, кем хочешь быть? Пройди тест и узнай, какие профессии подходят именно тебе. Просто текст, вообще
           надо подумать, нужен ли он здесь</p>
         <b-row no-gutters class="justify-content-end">
-          <button class="profession__secondary-button mr-2">
+          <button @click="$bvModal.hide('modal1')" class="profession__secondary-button mr-2">
             Остаться
           </button>
           <button class="profession__button">
@@ -60,49 +63,81 @@ export default {
   methods: {
     professionChosen(profession) {
       this.$store.commit('modules/professions/setSelectedProfession', profession)
+      this.$router.push({ path: 'keywords', query: { id: profession.id } })
     }
   }
 }
 </script>
 
 <style lang="scss">
+.professionCardButton{
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0 0;
+  height: max-content;
+  max-width: 540px;
+  min-width: 440px;
+  flex-shrink: 0;
+}
 .profession__container {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: 11.7rem;
-  grid-column-gap: 1.5rem;
-  grid-row-gap: 1rem;
-  padding: 0.5rem 0;
+  //grid-auto-rows: 11.7rem;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+  justify-items: center;
+  width: 100%;
+
+  margin-bottom: 24px;
 
   @media (max-width: 1400px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  @media (max-width: 576px) {
+  @media (max-width: 960px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
 
 .profession__title {
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.modalHeader{
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.modalText{
+  margin-bottom: 24px;
+}
+
+.professionsContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .profession__button {
+  transition: 0.3s;
+
+  align-self: center;
   background: #8533FF;
   color: white;
-  font-size: 0.875rem;
+  font-size: 14px;
   font-weight: 700;
   border: 0;
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  transition: 0.3s;
+  padding: 8px 12px;
 }
 
 .profession__button:hover {
   background: #AE78FE;
   color: white;
-  transition: 0.3s;
 }
 
 .profession__button:active {

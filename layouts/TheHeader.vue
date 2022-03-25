@@ -1,6 +1,6 @@
 <template>
   <b-row class="header align-items-center" no-gutters>
-    <img src="/logo.svg" />
+    <img src="/logo.svg" alt="logo" />
     <p class="mb-0 pl-1">ITMO.TRACK</p>
   </b-row>
 </template>

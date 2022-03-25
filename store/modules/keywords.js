@@ -29,7 +29,7 @@ actions = {
       const response = await this.$axios.get('/api/keywords/')
       context.commit('setQueryKeywords', response.data)
     } catch {
-      alert('Error')
+      // alert('Error')
     }
   }
 }

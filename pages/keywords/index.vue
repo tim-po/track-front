@@ -10,21 +10,7 @@
             repellat?
           </p>
           <b-row no-gutters>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
-            <span class="keywords__keyword mr-1 mb-2">English</span>
+            <span class="keywords__keyword mr-1 mb-2" v-for="keyword in profession.visible_keywords" :key="keyword">{{ keyword }}</span>
           </b-row>
           <p class="mb-0 mt-2 keywords__more-button">Все ключевые слова ></p>
         </b-card>
@@ -69,9 +55,16 @@ export default {
   data() {
     return {
       pop1: true,
-      pop2: false
+      pop2: false,
     }
   },
+
+  computed: {
+    profession() {
+      const professionFromStore = this.$store.getters['modules/professions/selectedProfession']
+      return this.$store.getters['modules/professions/selectedProfession'] || this.$store.getters['modules/professions/professions'].find(prof => prof.id === this.$route.query.id)
+    }
+  }
 }
 </script>
 

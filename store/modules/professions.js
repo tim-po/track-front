@@ -300,7 +300,7 @@ mutations = {
   },
 
   setSelectedProfession: (state, payload) => {
-    state.selectedProfessions = payload
+    state.selectedProfession = payload
   }
 }
 
@@ -310,7 +310,7 @@ actions = {
       const response = await this.$axios.get('/api/professions/')
       context.commit('setProfessions', response.data)
     } catch {
-      alert('Error')
+      // alert('Error')
     }
   }
 }
