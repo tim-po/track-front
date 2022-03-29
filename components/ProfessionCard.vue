@@ -1,17 +1,17 @@
 <template>
-    <div class="professionCard">
-      <div class="card-data">
-        <h4 class="professionCard__title">{{ profession.name }}</h4>
-        <div class="professionCard__keywords">
-          <div v-for="keyword in profession.visible_keywords" :key="keyword"
-                class="professionCard__keyword" :style="'background:' + color">
-            {{ keyword }}
-          </div>
+  <div class="professionCard">
+    <div class="card-data">
+      <h4 class="professionCard__title">{{ profession.name }}</h4>
+      <div class="professionCard__keywords">
+        <div v-for="keyword in profession.visible_keywords" :key="keyword.id"
+             class="professionCard__keyword" :style="'background:' + color">
+          {{ keyword.text }}
         </div>
-        <div class="professionCard__category">{{ profession.category }}</div>
       </div>
-      <img :src="profession.icon_link" alt="Profession Image">
+      <div class="professionCard__category">{{ profession.category }}</div>
     </div>
+    <img :src="profession.icon" alt="Profession Image">
+  </div>
 </template>
 
 <script>
@@ -30,12 +30,13 @@ export default {
 
 <style>
 
-.card-data{
+.card-data {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
 }
+
 .professionCard {
   transition: all 0.3s;
   padding: 24px 20px;
@@ -54,7 +55,7 @@ export default {
   box-shadow: 0 0 0 rgba(181, 181, 197, 0.25);
 }
 
-.professionCard:hover{
+.professionCard:hover {
   transform: scale(1.018);
   box-shadow: 0px 2px 10px rgba(181, 181, 197, 0.25);
 }
@@ -70,7 +71,7 @@ export default {
   position: relative;
 }
 
-.professionCard__keywords{
+.professionCard__keywords {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 8px;

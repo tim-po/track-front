@@ -63,7 +63,7 @@ export default {
 
   methods: {
     professionChosen(profession) {
-      this.$store.commit('modules/professions/setSelectedProfession', profession)
+      this.$store.commit('modules/keywords/setKeywords', profession.related_keywords)
       this.$router.push({path: 'keywords', query: {id: profession.id}})
     }
   }
@@ -128,7 +128,7 @@ export default {
   transition: 0.3s;
 
   align-self: center;
-  background: #8533FF;
+  background: var(--color-5-dark);
   color: white;
   font-size: 14px;
   font-weight: 700;
@@ -169,7 +169,7 @@ export default {
 }
 
 .profession__secondary-button {
-  color: #8533FF;
+  color: var(--color-5-dark);
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   background: white;
