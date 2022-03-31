@@ -1,5 +1,3 @@
-import keywords from "@/pages/keywords";
-
 let state = {}
 let getters = {}
 let mutations = {}
@@ -8,18 +6,24 @@ let actions = {}
 state = () => ({
   keywords: [],
   queryKeywords: [],
-  addedKeywords: []
+  addedKeywords: [],
+  trajectoryId: 0
 })
 
 getters = {
   keywords: (state) => state.keywords,
   queryKeywords: (state) => state.queryKeywords,
-  addedKeywords: (state) => state.addedKeywords
+  addedKeywords: (state) => state.addedKeywords,
+  trajectoryId: (state) => state.trajectoryId,
 }
 
 mutations = {
   setQueryKeywords: (state, payload) => {
     state.queryKeywords = payload
+  },
+
+  setTrajectoryId: (state, payload) => {
+    state.trajectoryId = payload
   },
 
   setKeywords: (state, payload) => {
@@ -39,7 +43,6 @@ mutations = {
   },
 
   deleteQueryKeyword: (state, payload) => {
-    console.log(payload)
     state.queryKeywords = state.queryKeywords.filter(word => word !== payload)
   }
 }
@@ -60,6 +63,9 @@ actions = {
     state.addedKeywords.forEach(e => postKeywords.push(e.id))
 
     const response = await this.$axios.post('/api/trajectories/', {'keywords': postKeywords})
+
+    commit('modules/trajectory/setTrajectory', response.data[0], {root: true})
+    commit('setTrajectoryId', response.data[0].id)
     console.log(response)
   }
 }

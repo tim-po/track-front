@@ -75,6 +75,8 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 8px;
+  max-height: 72px;
+  overflow: hidden;
 }
 
 .professionCard__keyword {
@@ -84,5 +86,6 @@ export default {
   padding: 8px 12px;
   margin-right: 8px;
   margin-bottom: 8px;
+  height: 32px
 }
 </style>
