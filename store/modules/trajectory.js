@@ -5,6 +5,7 @@ let actions = {}
 
 state = () => ({
   trajectory: {},
+  discipline: null,
   colors: {
     "программирование и информационные технологии": "var(--color-6)",
     "soft-skills": "var(--color-2)",
@@ -23,6 +24,7 @@ state = () => ({
 
 getters = {
   trajectory: (state) => state.trajectory,
+  discipline: (state) => state.discipline,
 
   course: (state) => (number) => {
     if (Object.keys(state.trajectory).length > 0) {
@@ -106,6 +108,10 @@ getters = {
 mutations = {
   setTrajectory: (state, payload) => {
     state.trajectory = payload
+  },
+
+  setDiscipline: (state, payload) => {
+    state.discipline = payload
   }
 }
 
@@ -118,6 +124,15 @@ actions = {
       alert('Error in trajectory request')
     }
   },
+
+  async getDiscipline(context, query) {
+    try {
+      const response = await this.$axios.get(`/api/trajectory_disciplines/${query}/`)
+      context.commit('setDiscipline', response.data)
+    } catch {
+      alert('Error in trajectory request')
+    }
+  }
 }
 
 export default {

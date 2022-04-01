@@ -44,8 +44,6 @@
             <span class="control-number">{{ statistic.zachet }}</span>
             <br>
             <span class="control-type">Зачет</span>
-            <br>
-
           </div>
         </b-row>
         <p class="trajectory-small-header">Дисциплины</p>
@@ -72,16 +70,16 @@
             {{ el }}
           </p>
           <b-row>
-            <b-col v-for="index in 2">
-              <div v-for="discipline in course[index-1].disciplines" :key="discipline.id">
-                <div class="discipline-card" v-if="discipline.class.name === el">
+            <b-col v-for="index in 2" :key="index">
+              <div v-b-modal:modal-discipline v-for="discipline in course[index-1].disciplines" :key="discipline.id">
+                <div @click="getModal(discipline.id)" class="discipline-card" v-if="discipline.class.name === el">
                   <b-row no-gutters class="justify-content-between">
                     <div
                       :class="{'discipline-card-type': discipline.necessity, 'discipline-card-type-optional': !discipline.necessity}">
                       {{ discipline.necessity ? 'Обязательно' : 'Выборная' }}
                     </div>
                     <div class="discipline-card-control">
-                      {{ discipline.control }}
+                      {{ discipline.control === 'Дифференцированный зачет' ? 'Диф. зачет' : discipline.control }}
                     </div>
                   </b-row>
                   <div
@@ -96,7 +94,65 @@
       </b-col>
     </b-row>
 
+    <b-modal v-if="discipline !== null" id="modal-discipline" content-class="discipline-modal" size="xl" hide-footer
+             hide-header>
+      <div class="discipline-image py-5 row no-gutters" :style="'background:' + colors[discipline.class.name]">
+        <b-col>
+          <div v-for="disc in discipline.prev_disciplines" class="discipline-card-modal mb-2 mx-auto">
+            {{ disc.name }}
+          </div>
+        </b-col>
+        <b-col>
+          <div class="discipline-card-modal mx-auto">
+            {{ discipline.name }}
+          </div>
+        </b-col>
+        <b-col>
+          <div v-for="disc in discipline.next_disciplines" class="discipline-card-modal mb-2 mx-auto">
+            {{ disc.name }}
+          </div>
+        </b-col>
+      </div>
 
+      <div class="discipline-modal-content">
+        <b-row class="justify-content-between align-items-center mb-4" no-gutters>
+          <h5 class="mb-0" style="max-width: 700px">{{ discipline.name }}</h5>
+          <div>
+                <span class="discipline-detail"
+                      :class="{'discipline-detail-green': !discipline.necessity, 'discipline-detail-pink': discipline.necessity}">
+                  {{ discipline.necessity ? 'Обязательный предмет' : 'Предмет по выбору' }}
+                </span>
+            <span class="ml-3 discipline-detail discipline-detail-yellow">{{ discipline.control }}</span>
+          </div>
+        </b-row>
+        <p class="modal-keywords-header">Полученные знания и навыки -
+          <span class="modal-keywords-coverage" :style="'color:'+ colors[discipline.class.name]">
+                Пересечение с ключевыми словами {{ Math.round(discipline.keywords_coverage * 100) }}%
+              </span>
+        </p>
+        <b-row no-gutters>
+          <div
+            class="modal-keyword mr-2 mb-2"
+            :style="'background:' + colors[discipline.class.name] + '!important'"
+            v-for="keyword in discipline.keywords_aligned_with_user">
+            {{ keyword.text }}
+          </div>
+          <div v-for="keyword in discipline.keywords">
+            <div v-if="!discipline.keywords_aligned_with_user.includes(keyword)" class="mr-2 mb-2 modal-keyword">
+              {{ keyword.text }}
+            </div>
+          </div>
+        </b-row>
+        <p v-if="discipline.prerequisites.length >0" class="modal-keywords-header">Пригодится при изученииее</p>
+        <b-row no-gutters>
+          <div
+            class="modal-keyword mr-2 mb-2"
+            v-for="keyword in discipline.prerequisites">
+            {{ keyword.text }}
+          </div>
+        </b-row>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -153,6 +209,16 @@ export default {
 
     statistic() {
       return this.$store.getters['modules/trajectory/statistic']
+    },
+
+    discipline() {
+      return this.$store.getters['modules/trajectory/discipline']
+    }
+  },
+
+  methods: {
+    getModal(id) {
+      this.$store.dispatch('modules/trajectory/getDiscipline', id)
     }
   }
 }
@@ -216,6 +282,7 @@ export default {
   min-width: 190px;
   font-weight: 500;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .trajectory-card {
@@ -263,5 +330,66 @@ export default {
 .discipline-card-control {
   color: #6E6D79;
   font-size: 10px;
+}
+
+.discipline-detail {
+  font-weight: 500;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+.discipline-detail-yellow {
+  background-color: var(--color-10-light);
+}
+
+.discipline-detail-green {
+  background-color: var(--color-3-verylight);
+}
+
+.discipline-detail-pink {
+  background-color: var(--color-4-light);
+}
+
+.modal-keywords-header {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.modal-keywords-coverage {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.modal-keyword {
+  padding: 10px 12px;
+  background: var(--gray-100);
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.discipline-card-modal {
+  padding: 18px 20px;
+  background: #FFFFFF;
+  border-radius: 8px;
+  max-width: 240px;
+}
+
+.discipline-modal {
+  border-radius: 20px;
+}
+
+.discipline-modal .modal-body {
+  padding: 0;
+  border-radius: 20px;
+}
+
+.discipline-image {
+  border-radius: 19px 19px 0px 0px;
+}
+
+.discipline-modal-content {
+  padding: 32px 36px 36px 36px;
 }
 </style>
