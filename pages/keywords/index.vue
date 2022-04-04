@@ -29,7 +29,7 @@
           При подборе наиболее оптимальных образовательных программ для тебя <br> мы также учитываем твои предпочтения.
           Добавляй навыки, которые хочешь <br> преобрести плюсом к необходимым для твоей профессии.
         </b-card>
-        <b-row class="keywords__required" no-gutters>
+        <b-row class="keywords__added" no-gutters>
           <span
             class="keywords__modal-keywords mr-1 mb-2"
             v-for="keyword in addedKeywords"
@@ -55,7 +55,7 @@
           @keyup="searchKeywords(searchQuery)">
         </b-input>
         <div class="keywords__subtext">Например: язык программирования C#</div>
-        <b-row class="mt-3" no-gutters>
+        <b-row class="mt-3 keywords-modal_add-keywords" no-gutters>
           <span
             class="keywords__modal-keywords keywords__modal-keywords_selected"
             v-for="keyword in keywordsToAdd"
@@ -209,8 +209,13 @@ export default {
 }
 
 .keywords__required {
-  max-height: 250px;
+  max-height: 210px;
   overflow: hidden;
+}
+
+.keywords__added {
+  max-height: 170px;
+  overflow: scroll;
 }
 
 .keywords__add {
@@ -278,6 +283,12 @@ export default {
   background: var(--color-secondary);
   transition: 0.3s;
 }
+
+.keywords-modal_add-keywords {
+  max-height: 376px;
+  overflow: scroll;
+}
+
 
 .button-secondary:active {
   background: var(--color-secondary);
