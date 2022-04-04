@@ -3,6 +3,8 @@ let getters = {}
 let mutations = {}
 let actions = {}
 
+import {debounce} from "lodash";
+
 state = () => ({
   keywords: [],
   queryKeywords: [],
@@ -49,13 +51,23 @@ mutations = {
 
 actions = {
   async getKeywords(context, query) {
-    try {
-      const response = await this.$axios.get(`/api/keywords/?text_like=${query}`)
-      context.commit('setQueryKeywords', response.data)
-    } catch {
-      alert('Error in keywords' + query)
+    if (query === '') {
+      context.commit('setQueryKeywords', [])
+    } else {
+      try {
+        const response = await this.$axios.get(`/api/keywords/?text_like=${query}`)
+        context.commit('setQueryKeywords', response.data)
+      } catch {
+        alert('Error in keywords' + query)
+      }
     }
   },
+
+
+  debounceKeywords: debounce(({dispatch}, query) => {
+    dispatch("getKeywords", query);
+  }, 300),
+
 
   async sendKeywords({state, commit}) {
     let postKeywords = []

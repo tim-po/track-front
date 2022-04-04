@@ -150,11 +150,7 @@ export default {
     },
 
     searchKeywords(query) {
-      if (query === "") {
-        this.$store.commit('modules/keywords/setQueryKeywords', [])
-      } else {
-        this.$store.dispatch('modules/keywords/getKeywords', query)
-      }
+      this.$store.dispatch('modules/keywords/debounceKeywords', query)
     },
 
     addKeywords() {
