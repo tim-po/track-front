@@ -19,17 +19,19 @@
       <b-col cols="4">
         <p class="trajectory-small-header">Статистика</p>
         <div class="trajectory-card">
-          <svg width="500" height="500">
+          <svg width="400" height="400">
             <g
-              class="klass"
+              v-if="klass.data.size > 20"
+              class="circles"
               v-for="klass in layoutData.children"
               :key="klass.data.name"
               :style="{
                     transform: `translate(${klass.x}px, ${klass.y}px)`
                   }"
             >
-              <circle :r="klass.r" :fill="klass.data.color"></circle>
-              <text>{{ klass.data.name }}</text>
+              <circle :r="klass.r" fill="#F3F3F4"></circle>
+              <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}</text>
+              <text dy="12px">{{ klass.data.name }}</text>
             </g>
           </svg>
         </div>
@@ -180,7 +182,7 @@
 </template>
 
 <script>
-// import {hierarchy, pack} from 'd3-hierarchy'
+import {hierarchy, pack} from 'd3-hierarchy'
 
 export default {
   name: 'TrajectoryPage',
@@ -196,31 +198,30 @@ export default {
   },
 
   computed: {
-    // transformedClassData() {
-    //   return {
-    //     name: 'Top Level',
-    //     children: this.amount.map(klass => ({
-    //       ...klass,
-    //       size: klass.amount,
-    //       parent: 'Top Level'
-    //     }))
-    //   }
-    // },
-    //
-    // layoutData() {
-    //   // Generate a D3 hierarchy
-    //   console.log(this.transformedClassData)
-    //   const rootHierarchy = hierarchy(this.transformedClassData)
-    //     .sum(d => d.size)
-    //     .sort((a, b) => {
-    //       return b.value - a.value
-    //     })
-    //
-    //   // Pack the circles inside the viewbox
-    //   return pack()
-    //     .size([500, 500])
-    //     .padding(10)(rootHierarchy)
-    // },
+    transformedClassData() {
+      return {
+        name: 'Top Level',
+        children: this.amount.map(klass => ({
+          ...klass,
+          size: klass.amount,
+          parent: 'Top Level'
+        }))
+      }
+    },
+
+    layoutData() {
+      // Generate a D3 hierarchy
+      const rootHierarchy = hierarchy(this.transformedClassData)
+        .sum(d => d.size)
+        .sort((a, b) => {
+          return b.value - a.value
+        })
+
+      // Pack the circles inside the viewbox
+      return pack()
+        .size([400, 400])
+        .padding(10)(rootHierarchy)
+    },
 
     amount() {
       return this.$store.getters['modules/trajectory/amount']
@@ -276,6 +277,25 @@ export default {
 </script>
 
 <style>
+svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.circles {
+  transition: transform 0.2s ease-in-out;
+  text-anchor: middle;
+  font-weight: 400;
+  font-size: 10px;
+}
+
+.klass-text {
+  transition: transform 0.2s ease-in-out;
+  text-anchor: middle;
+  font-weight: 400;
+  font-size: 10px;
+}
+
 .trajectory-page {
   max-width: 1500px;
   margin: 0 auto;

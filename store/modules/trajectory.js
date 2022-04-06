@@ -59,7 +59,7 @@ getters = {
           if (amount.find(el => el.name === discipline.class.name) !== undefined) {
             for (const obj of amount) {
               if (obj.name === discipline.class.name) {
-                obj.amount += 'Alfred';
+                obj.amount += 1;
                 break;
               }
             }
@@ -72,7 +72,7 @@ getters = {
         })
       })
     }
-    console.log(amount)
+
     return amount
   },
 
