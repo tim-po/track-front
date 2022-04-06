@@ -5,13 +5,13 @@
       <div>
         <button
           :class="{'course-button-active': number === currentCourse}"
-          class="course-button ml-2"
+          class="course-button ml-3"
           v-for="number in courses"
           :key="number"
           @click="currentCourse = number">
           {{ number }} Курс
         </button>
-        <button class="course-button mr-2">Диплом</button>
+        <button class="course-button-diploma mr-2 ml-3">Диплом</button>
       </div>
     </b-row>
     <hr class="header-divider">
@@ -19,10 +19,19 @@
       <b-col cols="4">
         <p class="trajectory-small-header">Статистика</p>
         <div class="trajectory-card">
-          <div v-for="(item, key) in amount" :key="key">
-            {{ key !== 'count' ? key : '' }}
-            <b-progress v-if="key !== 'count'" class="mt-2" :max="amount.count" :value="item"></b-progress>
-          </div>
+          <svg width="500" height="500">
+            <g
+              class="klass"
+              v-for="klass in layoutData.children"
+              :key="klass.data.name"
+              :style="{
+                    transform: `translate(${klass.x}px, ${klass.y}px)`
+                  }"
+            >
+              <circle :r="klass.r" :fill="klass.data.color"></circle>
+              <text>{{ klass.data.name }}</text>
+            </g>
+          </svg>
         </div>
         <b-row class="mt-1 justify-content-between" no-gutters>
           <div class="trajectory-card">
@@ -96,18 +105,32 @@
 
     <b-modal v-if="discipline !== null" id="modal-discipline" content-class="discipline-modal" size="xl" hide-footer
              hide-header>
-      <div class="discipline-image py-5 row no-gutters" :style="'background:' + colors[discipline.class.name]">
-        <b-col>
+      <div class="discipline-image row no-gutters" :style="'background:' + colors[discipline.class.name]">
+        <b-col class="justify-content-center d-flex flex-column">
+          <p
+            :class="{'modal-col-header-deactive': !discipline.prev_disciplines }"
+            class="text-center modal-col-header">
+            Сначала изучить
+          </p>
           <div v-for="disc in discipline.prev_disciplines" class="discipline-card-modal mb-2 mx-auto">
             {{ disc.name }}
           </div>
         </b-col>
-        <b-col>
+        <b-col class="discipline-modal-column justify-content-center d-flex flex-column">
+          <p
+            class="text-center modal-col-header">
+            {{ currentCourse }} курс
+          </p>
           <div class="discipline-card-modal mx-auto">
             {{ discipline.name }}
           </div>
         </b-col>
-        <b-col>
+        <b-col class="justify-content-center d-flex flex-column">
+          <p
+            :class="{'modal-col-header-deactive': !discipline.next_disciplines }"
+            class="text-center modal-col-header">
+            Где пригодится
+          </p>
           <div v-for="disc in discipline.next_disciplines" class="discipline-card-modal mb-2 mx-auto">
             {{ disc.name }}
           </div>
@@ -157,6 +180,8 @@
 </template>
 
 <script>
+// import {hierarchy, pack} from 'd3-hierarchy'
+
 export default {
   name: 'TrajectoryPage',
 
@@ -171,6 +196,32 @@ export default {
   },
 
   computed: {
+    // transformedClassData() {
+    //   return {
+    //     name: 'Top Level',
+    //     children: this.amount.map(klass => ({
+    //       ...klass,
+    //       size: klass.amount,
+    //       parent: 'Top Level'
+    //     }))
+    //   }
+    // },
+    //
+    // layoutData() {
+    //   // Generate a D3 hierarchy
+    //   console.log(this.transformedClassData)
+    //   const rootHierarchy = hierarchy(this.transformedClassData)
+    //     .sum(d => d.size)
+    //     .sort((a, b) => {
+    //       return b.value - a.value
+    //     })
+    //
+    //   // Pack the circles inside the viewbox
+    //   return pack()
+    //     .size([500, 500])
+    //     .padding(10)(rootHierarchy)
+    // },
+
     amount() {
       return this.$store.getters['modules/trajectory/amount']
     },
@@ -225,6 +276,36 @@ export default {
 </script>
 
 <style>
+.trajectory-page {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.discipline-modal-column {
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+}
+
+.modal-col-header {
+  position: absolute;
+  font-weight: 500;
+  font-size: 12px;
+  color: #FFFFFF;
+  top: 44px;
+  left: 0;
+  right: 0;
+}
+
+.modal-col-header-deactive {
+  font-weight: 500;
+  font-size: 12px;
+  color: #FFFFFF;
+  opacity: 0.3;
+  top: 44px;
+  left: 0;
+  right: 0;
+}
+
 .course-button {
   background: transparent;
   border: 0;
@@ -232,6 +313,16 @@ export default {
   font-size: 14px;
   padding: 10px 12px;
   border-radius: 8px 8px 0px 0px;
+}
+
+.course-button-diploma {
+  background: transparent;
+  border: 0;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: 8px 8px 0px 0px;
+  color: var(--color-5-dark);
 }
 
 .course-button-active {
@@ -386,7 +477,8 @@ export default {
 }
 
 .discipline-image {
-  border-radius: 19px 19px 0px 0px;
+  border-radius: 19px 19px 0px 0px;;
+  height: 340px;
 }
 
 .discipline-modal-content {

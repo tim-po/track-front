@@ -50,23 +50,30 @@ getters = {
   },
 
   amount: (state) => {
-    let amount = {}
-    let count = 0
+    let amount = []
 
     if (Object.keys(state.trajectory).length > 0) {
       state.trajectory.semesters.forEach(semester => {
         semester.disciplines.forEach(discipline => {
-          if (discipline.class.name in amount) {
-            amount[discipline.class.name] += 1
+
+          if (amount.find(el => el.name === discipline.class.name) !== undefined) {
+            for (const obj of amount) {
+              if (obj.name === discipline.class.name) {
+                obj.amount += 'Alfred';
+                break;
+              }
+            }
           } else {
-            amount[discipline.class.name] = 1
+            amount.push({
+              name: discipline.class.name,
+              amount: 1,
+            })
           }
-          count += 1
         })
       })
     }
-
-    return {...amount, count}
+    console.log(amount)
+    return amount
   },
 
   statistic: (state) => {
