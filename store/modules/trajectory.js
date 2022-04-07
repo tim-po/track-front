@@ -48,68 +48,6 @@ getters = {
   colors: (state) => {
     return state.colors
   },
-
-  amount: (state) => {
-    let amount = []
-
-    if (Object.keys(state.trajectory).length > 0) {
-      state.trajectory.semesters.forEach(semester => {
-        semester.disciplines.forEach(discipline => {
-
-          if (amount.find(el => el.name === discipline.class.name) !== undefined) {
-            for (const obj of amount) {
-              if (obj.name === discipline.class.name) {
-                obj.amount += 1;
-                break;
-              }
-            }
-          } else {
-            amount.push({
-              name: discipline.class.name,
-              amount: 1,
-            })
-          }
-        })
-      })
-    }
-
-    return amount
-  },
-
-  statistic: (state) => {
-    let necessary = 0
-    let selective = 0
-    let exam = 0
-    let dif = 0
-    let zachet = 0
-    let coursework = 0
-
-    if (Object.keys(state.trajectory).length > 0) {
-
-      state.trajectory.semesters.forEach(semester => {
-        semester.disciplines.forEach(discipline => {
-          if (discipline.necessity) {
-            necessary += 1
-          } else {
-            selective += 1
-          }
-
-          if (discipline.control === "Экзамен") {
-            exam += 1
-          } else if (discipline.control === "Зачет") {
-            zachet += 1
-          } else if (discipline.control === "Дифференцированный зачет") {
-            dif += 1
-          } else if (discipline.control === "Курсовой проект") {
-            coursework += 1
-          }
-        })
-      })
-
-    }
-
-    return {selective, necessary, dif, zachet, coursework, exam}
-  }
 }
 
 mutations = {

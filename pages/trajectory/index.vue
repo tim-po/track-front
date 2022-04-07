@@ -21,7 +21,7 @@
         <div class="trajectory-card">
           <svg width="400" height="400">
             <g
-              v-if="klass.data.size > 20"
+              v-if="klass.data.size > 5"
               class="circles"
               v-for="klass in layoutData.children"
               :key="klass.data.name"
@@ -85,7 +85,8 @@
           </p>
           <b-row>
             <b-col v-for="index in 2" :key="index">
-              <div v-b-modal:modal-discipline v-for="discipline in course[index-1].disciplines" :key="discipline.id">
+              <div v-b-modal:modal-discipline class="modal-card-button"
+                   v-for="discipline in course[index-1].disciplines" :key="discipline.id">
                 <div @click="getModal(discipline.id)" class="discipline-card" v-if="discipline.class.name === el">
                   <b-row no-gutters class="justify-content-between">
                     <div
@@ -108,8 +109,13 @@
       </b-col>
     </b-row>
 
-    <b-modal v-if="discipline !== null" id="modal-discipline" content-class="discipline-modal" size="xl" hide-footer
-             hide-header>
+    <b-modal
+      v-if="discipline !== null"
+      id="modal-discipline"
+      content-class="discipline-modal"
+      size="xl"
+      hide-footer
+      hide-header>
       <div class="discipline-image row no-gutters" :style="'background:' + colors[discipline.class.name]">
         <b-col class="justify-content-center d-flex flex-column">
           <p
@@ -227,7 +233,30 @@ export default {
     },
 
     amount() {
-      return this.$store.getters['modules/trajectory/amount']
+      let amount = []
+
+      if (this.course !== undefined) {
+        console.log(this.course)
+        this.course.forEach(semester => {
+          semester.disciplines.forEach(discipline => {
+            if (amount.find(el => el.name === discipline.class.name) !== undefined) {
+              for (const obj of amount) {
+                if (obj.name === discipline.class.name) {
+                  obj.amount += 1;
+                  break;
+                }
+              }
+            } else {
+              amount.push({
+                name: discipline.class.name,
+                amount: 1,
+              })
+            }
+          })
+        })
+      }
+
+      return amount
     },
 
     trajectory() {
@@ -263,7 +292,38 @@ export default {
     },
 
     statistic() {
-      return this.$store.getters['modules/trajectory/statistic']
+      let necessary = 0
+      let selective = 0
+      let exam = 0
+      let dif = 0
+      let zachet = 0
+      let coursework = 0
+
+      if (this.course !== undefined) {
+
+        this.course.forEach(semester => {
+          semester.disciplines.forEach(discipline => {
+            if (discipline.necessity) {
+              necessary += 1
+            } else {
+              selective += 1
+            }
+
+            if (discipline.control === "Экзамен") {
+              exam += 1
+            } else if (discipline.control === "Зачет") {
+              zachet += 1
+            } else if (discipline.control === "Дифференцированный зачет") {
+              dif += 1
+            } else if (discipline.control === "Курсовой проект") {
+              coursework += 1
+            }
+          })
+        })
+
+      }
+
+      return {selective, necessary, dif, zachet, coursework, exam}
     },
 
     discipline() {
@@ -280,6 +340,10 @@ export default {
 </script>
 
 <style>
+.modal-card-button {
+  outline: none !important;
+}
+
 svg {
   display: block;
   margin: 0 auto;
