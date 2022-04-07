@@ -31,7 +31,10 @@
             >
               <circle :r="klass.r" fill="#F3F3F4"></circle>
               <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}</text>
-              <text dy="12px">{{ klass.data.name }}</text>
+              <text dy="12px">{{
+                  klass.data.name.length > 20 ? klass.data.name.substring(0, 17) : klass.data.name
+                }}
+              </text>
             </g>
           </svg>
         </div>

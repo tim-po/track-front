@@ -215,7 +215,7 @@ export default {
 
 .keywords__added {
   max-height: 170px;
-  overflow: scroll;
+  overflow-Y: auto;
 }
 
 .keywords__add {
@@ -286,7 +286,7 @@ export default {
 
 .keywords-modal_add-keywords {
   max-height: 376px;
-  overflow: scroll;
+  overflow-Y: auto;
 }
 
 
