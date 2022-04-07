@@ -50,6 +50,7 @@
       <b-col class="profession__modal">
         <h5 class="modalHeader">Ключевые слова</h5>
         <b-input
+          class="keywords-input shadow-none"
           placeholder="Введи ключевое слово"
           v-model="searchQuery"
           @keyup="searchKeywords(searchQuery)">
@@ -57,16 +58,11 @@
         <div class="keywords__subtext">Например: язык программирования C#</div>
         <b-row class="mt-3 keywords-modal_add-keywords" no-gutters>
           <span
-            class="keywords__modal-keywords keywords__modal-keywords_selected"
-            v-for="keyword in keywordsToAdd"
-            :key="keyword.text">
-            {{ keyword.text }}
-          </span>
-          <span
             class="keywords__modal-keywords"
             v-for="keyword in queryKeywords"
             :key="keyword.text"
             @click="selectKeyword(keyword)"
+            :class="{'keywords__modal-keywords_selected': keywordsToAdd.includes(keyword)}"
           >
             {{ keyword.text }}
           </span>
@@ -80,8 +76,8 @@
     <b-modal content-class="add-keywords-modal" size="xl" hide-footer hide-header id="modal2">
       <b-col class="profession__modal">
         <h5 class="modalHeader">{{ profession ? profession.name : '' }}</h5>
-        <b-input placeholder="Введи ключевое слово"></b-input>
-        <b-row class="mt-3" no-gutters>
+        <!--        <b-input class="keywords-input shadow-none" placeholder="Введи ключевое слово"></b-input>-->
+        <b-row class="mt-4" no-gutters>
           <span
             class="keywords__keyword mr-2 mb-2"
             v-for="keyword in keywords"
@@ -159,8 +155,11 @@ export default {
     },
 
     selectKeyword(keyword) {
-      this.keywordsToAdd.push(keyword)
-      this.$store.commit('modules/keywords/deleteQueryKeyword', keyword)
+      if (this.keywordsToAdd.includes(keyword)) {
+        this.keywordsToAdd.splice(this.keywordsToAdd.indexOf(keyword), 1)
+      } else {
+        this.keywordsToAdd.push(keyword)
+      }
     },
 
     async sendKeywords() {
@@ -172,6 +171,14 @@ export default {
 </script>
 
 <style>
+.keywords-input:focus {
+  border: 1px solid rgba(210, 210, 212, 0.8)
+}
+
+.keywords-input {
+  border: 1px solid rgba(210, 210, 212, 0.8)
+}
+
 .keywords__modal-keywords {
   background: var(--color-secondary);
   border-radius: 8px;
@@ -183,7 +190,8 @@ export default {
 }
 
 .keywords__modal-keywords_selected {
-  border: 1px solid var(--color-5-dark)
+  border: 1px solid var(--color-5-dark);
+  padding: 7px 11px;
 }
 
 .keywords__modal-button {
