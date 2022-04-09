@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+
+before_script:
+  - cp $APP_ENV .env
+
+build-docker:
+  stage: build
+  tags:
+    - shell
+  script:
+    - echo "Build the project..."
+    - docker-compose build
+    - echo "Build complete."
+  only:
+    - dev
+    - master
+
+.deploy_template: &deploy_template
+  stage: deploy
+  tags:
+    - shell
+  script:
+    - docker-compose up -d
+
+deploy:
+  <<: *deploy_template
+  only:
+    - dev
+
+deploy master:
+  <<: *deploy_template
+  only:
+    - master
+  when: manual

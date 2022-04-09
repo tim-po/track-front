@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  itmo-track:
+    image: itmo-track-frontend:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: itmo-track-frontend-dev
+    labels:
+      - traefik.http.routers.itmo-track-frontend-dev.rule=Host(`dev.track.la.itmo.su`)
+      - traefik.http.routers.itmo-track-frontend-dev.entrypoints=websecure
+      - traefik.http.routers.itmo-track-frontend-dev.tls.certresolver=myresolver
+      - entrypoints.web.http.redirections.entryPoint.to=websecure
+      - traefik.enable=true
+    env_file:
+      - .env
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    ports:
+      - "3000:3000"
+
+networks:
+  default:
+    name: web
+    external: true
