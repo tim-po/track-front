@@ -131,8 +131,8 @@ export default {
       return this.$store.getters['modules/keywords/addedKeywords']
     },
 
-    trajectoryId() {
-      return this.$store.getters['modules/keywords/trajectoryId']
+    trajectoryIds() {
+      return this.$store.getters['modules/keywords/trajectoryIds']
     }
   },
 
@@ -164,7 +164,7 @@ export default {
 
     async sendKeywords() {
       await this.$store.dispatch('modules/keywords/sendKeywords')
-      this.$router.push({path: '/trajectory', query: {id: this.trajectoryId}})
+      this.$router.push({path: '/trajectories', query: {ids: this.trajectoryIds}})
     }
   }
 }

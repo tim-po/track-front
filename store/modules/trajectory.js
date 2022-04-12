@@ -5,6 +5,7 @@ let actions = {}
 
 state = () => ({
   trajectory: {},
+  trajectories: [],
   discipline: null,
   colors: {
     "программирование и информационные технологии": "var(--color-6)",
@@ -23,6 +24,7 @@ state = () => ({
 })
 
 getters = {
+  trajectories: (state) => state.trajectories,
   trajectory: (state) => state.trajectory,
   discipline: (state) => state.discipline,
 
@@ -31,6 +33,7 @@ getters = {
       return state.trajectory.semesters.filter(el => el.semester === number * 2 - 1 || el.semester === number * 2)
     }
   },
+
   courses: (state) => {
     let courses = []
 
@@ -55,16 +58,28 @@ mutations = {
     state.trajectory = payload
   },
 
+  setTrajectories: (state, payload) => {
+    state.trajectories = payload
+  },
+
+  pushTrajectories: (state, payload) => {
+    state.trajectories.push(payload)
+  },
+
   setDiscipline: (state, payload) => {
     state.discipline = payload
   }
 }
 
 actions = {
-  async getTrajectory(context, query) {
+  async getTrajectory(context, {query, mode}) {
     try {
       const response = await this.$axios.get(`/api/trajectories/${query}/`)
-      context.commit('setTrajectory', response.data)
+      if (mode === 'push') {
+        context.commit('pushTrajectories', response.data)
+      } else {
+        context.commit('setTrajectory', response.data)
+      }
     } catch {
       alert('Error in trajectory request')
     }
@@ -75,7 +90,7 @@ actions = {
       const response = await this.$axios.get(`/api/trajectory_disciplines/${query}/`)
       context.commit('setDiscipline', response.data)
     } catch {
-      alert('Error in trajectory request')
+      alert('Error in discipline request')
     }
   }
 }

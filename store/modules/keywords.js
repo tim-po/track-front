@@ -9,14 +9,14 @@ state = () => ({
   keywords: [],
   queryKeywords: [],
   addedKeywords: [],
-  trajectoryId: 0
+  trajectoryIds: []
 })
 
 getters = {
   keywords: (state) => state.keywords,
   queryKeywords: (state) => state.queryKeywords,
   addedKeywords: (state) => state.addedKeywords,
-  trajectoryId: (state) => state.trajectoryId,
+  trajectoryIds: (state) => state.trajectoryIds,
 }
 
 mutations = {
@@ -24,8 +24,8 @@ mutations = {
     state.queryKeywords = payload
   },
 
-  setTrajectoryId: (state, payload) => {
-    state.trajectoryId = payload
+  setTrajectoryIds: (state, payload) => {
+    state.trajectoryIds = payload
   },
 
   setKeywords: (state, payload) => {
@@ -76,8 +76,11 @@ actions = {
 
     const response = await this.$axios.post('/api/trajectories/', {'keywords': postKeywords})
 
-    commit('modules/trajectory/setTrajectory', response.data[0], {root: true})
-    commit('setTrajectoryId', response.data[0].id)
+    commit('modules/trajectory/setTrajectories', response.data, {root: true})
+
+    let ids = []
+    response.data.forEach(el => ids.push(el.id))
+    commit('setTrajectoryIds', ids)
     console.log(response)
   }
 }

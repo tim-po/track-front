@@ -203,7 +203,11 @@ export default {
   },
 
   created() {
-    this.$store.dispatch('modules/trajectory/getTrajectory', +this.$route.query.id)
+    if (Object.keys(this.trajectory).length === 0) {
+      this.$store.dispatch('modules/trajectory/getTrajectory', { query: +this.$route.query.id, mode: 'set'})
+    }
+
+    this.$store.dispatch('modules/trajectory/getDiscipline', 1)
   },
 
   computed: {
