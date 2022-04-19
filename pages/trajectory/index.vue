@@ -21,7 +21,6 @@
         <div class="trajectory-card">
           <svg width="400" height="400">
             <g
-              v-if="klass.data.size > 5"
               class="circles"
               v-for="klass in layoutData.children"
               :key="klass.data.name"
@@ -172,7 +171,7 @@
             {{ keyword.text }}
           </div>
           <div v-for="keyword in discipline.keywords">
-            <div v-if="!discipline.keywords_aligned_with_user.includes(keyword)" class="mr-2 mb-2 modal-keyword">
+            <div v-show="keyword.text !== ''" v-if="!keywordInArray(keyword, discipline.keywords_aligned_with_user)" class="mr-2 mb-2 modal-keyword">
               {{ keyword.text }}
             </div>
           </div>
@@ -338,6 +337,17 @@ export default {
   methods: {
     getModal(id) {
       this.$store.dispatch('modules/trajectory/getDiscipline', id)
+    },
+
+
+    keywordInArray (keyword, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].text === keyword.text) {
+          return true
+        }
+      }
+
+      return false
     }
   }
 }

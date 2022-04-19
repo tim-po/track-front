@@ -58,11 +58,21 @@
         <div class="keywords__subtext">Например: язык программирования C#</div>
         <b-row class="mt-3 keywords-modal_add-keywords" no-gutters>
           <span
-            class="keywords__modal-keywords"
+            class="keywords__modal-keywords keywords__modal-keywords_selected"
+            v-for="keyword in keywordsToAdd"
+            :key="keyword.text"
+            @click="selectKeyword(keyword)"
+            v-if="!keywordInArray(keyword, queryKeywords)"
+          >
+            {{ keyword.text }}
+          </span>
+          <span
+            class="keywords__modal-keywords "
             v-for="keyword in queryKeywords"
             :key="keyword.text"
             @click="selectKeyword(keyword)"
-            :class="{'keywords__modal-keywords_selected': keywordsToAdd.includes(keyword)}"
+            :class="{'keywords__modal-keywords_selected': keywordInArray(keyword, keywordsToAdd)}"
+            v-show="!keywordInArray(keyword, addedKeywords)"
           >
             {{ keyword.text }}
           </span>
@@ -165,6 +175,16 @@ export default {
     async sendKeywords() {
       await this.$store.dispatch('modules/keywords/sendKeywords')
       this.$router.push({path: '/trajectories', query: {ids: this.trajectoryIds}})
+    },
+
+    keywordInArray (keyword, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].text === keyword.text) {
+          return true
+        }
+      }
+
+      return false
     }
   }
 }
