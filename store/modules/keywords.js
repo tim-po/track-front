@@ -74,14 +74,14 @@ actions = {
     state.keywords.forEach(e => postKeywords.push(e.id))
     state.addedKeywords.forEach(e => postKeywords.push(e.id))
 
-    const response = await this.$axios.post('/api/trajectories/', {'keywords': postKeywords})
+    const response = await this.$axios.post('/api/trajectories/?top_n=3', {'keywords': postKeywords})
 
     commit('modules/trajectory/setTrajectories', response.data, {root: true})
+    console.log(response)
 
     let ids = []
     response.data.forEach(el => ids.push(el.id))
     commit('setTrajectoryIds', ids)
-    console.log(response)
   }
 }
 

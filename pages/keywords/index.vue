@@ -174,7 +174,7 @@ export default {
 
     async sendKeywords() {
       await this.$store.dispatch('modules/keywords/sendKeywords')
-      this.$router.push({path: '/trajectories', query: {ids: this.trajectoryIds}})
+      this.$router.push({path: '/trajectories', query: {ids: JSON.stringify(this.trajectoryIds) }})
     },
 
     keywordInArray (keyword, array) {
