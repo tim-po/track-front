@@ -1,191 +1,179 @@
 <template>
-  <div>
-    <div class="professionsContainer">
-      <h3 class="profession__title">У нас ты можешь стать лучше</h3>
-      <div class="profession__container">
-        <button
-          class="professionCardButton"
-          v-for="profession in professions"
-          :key="profession.id"
-          v-on:click="professionChosen(profession)"
-        >
-          <ProfessionCard
-            :profession="profession"
-          />
-        </button>
+  <div class="container landing pb-5">
+    <section class="landing-card">
+      <div class="d-flex">
+        <div class="d-flex flex-column justify-content-between">
+          <h1 class="main-title">
+            Переведем твои желания на язык дисциплин
+          </h1>
+          <div class="mb-5">
+            <Nuxt-link to="/professions">
+              <button class="main-button mr-4">Поехали!</button>
+            </Nuxt-link>
+            <button class="secondary-button">Подробнее</button>
+          </div>
+        </div>
+        <div class="d-flex flex-column justify-content-center">
+          <img src="/landing-background.svg" alt="">
+        </div>
       </div>
-      <button v-b-modal.modal1 class="profession__button mb-4">
-        Не знаю, что мне подходит
-      </button>
+      <span class="header-subtext">
+        ITMO.TRACK – Персональные образовательные траектории
+      </span>
+    </section>
+    <section class="info d-flex mt-3">
+      <div class="hello-card flex-grow-0 mr-3">
+        <div class="text-center">
+          <img src="/Wave.svg" alt="">
+        </div>
+        <p class="hello-text mt-2">
+          Привет ты попал в проект образовательные траектории!
+          Здесь мы поможем тебе  увидеть свое будущее в ИМТО.
+        </p>
+      </div>
+      <div class="info-card flex-grow-1">
+        <div class="info-title">Как мы поймем что тебе лучше всего?</div>
+        <div class="d-flex align-items-start mt-3">
+          <img src="/A.svg" alt="">
+          <p class="ml-4 info-text">
+            Ты выберешь уже готовый набор <b>ключевых слов*</b>, сформированный под запросы поопулярных профессий или пройдешь тест с выбором близких тебе навыков
+            и личных качеств
+          </p>
+        </div>
+        <div class="d-flex align-items-start mt-3">
+          <img src="/B.svg" alt="">
+          <p class="ml-4 info-text">
+            Ты можешь изменять набор:  убирать или добавлять важные навыки и знания
+          </p>
+        </div>
+        <div class="mt-4 info-subtext">
+          * Набор ключевых слов – список навыков, умений и т.п.
+        </div>
+      </div>
+    </section>
+    <div class="final-card mt-3 d-flex justify-content-between">
+      <div>
+        <div class="final-card-title">
+          Последним шагом мы построим для тебя образовательную траекторию в ИТМО
+        </div>
+        <div class="info-subtext mt-2">
+          Образовательная траектория – твоя будущая учебная программа
+        </div>
+      </div>
+      <img src="/stars.svg" alt="">
     </div>
-
-    <b-modal content-class="main-modal" hide-footer hide-header id="modal1">
-      <img class="modal-image" src="/modal-header.jpg">
-      <b-col class="profession__modal">
-        <h5 class="modalHeader">Узнай, что подходит тебе лучше всего</h5>
-        <p class="modalText">Не решил, кем хочешь быть? Пройди тест и узнай, какие профессии подходят именно тебе.
-          Просто текст, вообще
-          надо подумать, нужен ли он здесь</p>
-        <b-row no-gutters class="justify-content-end">
-          <button @click="$bvModal.hide('modal1')" class="profession__secondary-button mr-2">
-            Остаться
-          </button>
-          <button class="profession__button">
-            <NuxtLink to="/keywords" style="text-decoration: none; color: inherit;">
-              Начать
-            </NuxtLink>
-          </button>
-        </b-row>
-      </b-col>
-    </b-modal>
   </div>
 </template>
 
 <script>
-import ProfessionCard from '../components/ProfessionCard'
-
 export default {
-  name: 'IndexPage',
+  name: "landingPage",
 
-  components: {
-    ProfessionCard
-  },
-
-  created() {
-    this.$store.dispatch('modules/professions/getProfessions')
-  },
-
-  computed: {
-    professions() {
-      return this.$store.getters['modules/professions/professions']
-    }
-  },
-
-  methods: {
-    professionChosen(profession) {
-      this.$store.commit('modules/keywords/setKeywords', profession.related_keywords)
-      this.$router.push({path: 'keywords', query: {id: profession.id}})
-    }
-  }
+  layout: 'gray'
 }
 </script>
 
-<style lang="scss">
-.professionCardButton {
-  background: none;
-  border: none;
-  outline: none;
-  padding: 0 0;
-  height: max-content;
-  max-width: 540px;
-  min-width: 450px;
-  flex-shrink: 0;
+<style>
+.landing-card {
+  background: white;
+  border-radius: 1.25rem;
+  padding: 70px 51px 55px 4rem;
 }
 
-.profession__container {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  //grid-auto-rows: 11.7rem;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
-  justify-items: center;
-  width: 100%;
-
-  margin-bottom: 24px;
-
-  @media (max-width: 1430px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: 960px) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
+.main-title {
+  font-weight: 800;
+  font-size: 64px;
 }
 
-.profession__title {
-  font-weight: 700;
-  font-size: 24px;
-  margin-bottom: 16px;
-}
-
-.modalHeader {
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.modalText {
-  margin-bottom: 24px;
-}
-
-.professionsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.profession__button {
+.main-button {
   transition: 0.3s;
-
   align-self: center;
   background: var(--color-5-dark);
   color: white;
-  font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
+  font-size: 20px;
   border: 0;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 20px 44px;
 }
 
-.profession__button:hover {
+.main-button:hover {
   background: #AE78FE;
   color: white;
 }
 
-.profession__button:active {
+.main-button:active {
   background: #7328E2;
   color: white;
-  transition: 0.3s;
 }
 
-
-.main-modal {
-  border-radius: 1rem;
-  padding: 0;
-}
-
-.main-modal .modal-body {
-  border-radius: 1rem;
-  padding: 0;
-}
-
-.profession__modal {
-  padding: 1.5rem;
-}
-
-.modal-image {
-  width: 100%;
-  border-radius: 1rem 1rem 0 0;
-}
-
-.profession__secondary-button {
+.secondary-button {
   color: var(--color-5-dark);
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
+  padding: 20px 34px;
   background: white;
-  border: 0;
+  border: 1px solid var(--color-5-dark);
   transition: 0.3s;
+  font-weight: 500;
+  font-size: 20px;
 }
 
-.profession__secondary-button:hover {
+.secondary-button:hover {
   background: #F3F3FE;
   color: #AE78FE;
-  transition: 0.3s;
 }
 
-.profession__secondary-button:active {
+.secondary-button:active {
   background: #F3F3FE;
   color: #7328E2;
-  transition: 0.3s;
+}
+
+.header-subtext {
+  color: var(--text-secondary);
+}
+
+.hello-card {
+  border-radius: 20px;
+  background: var(--color-5-dark);
+  padding: 2rem 2.4rem 3rem 2.4rem;
+}
+
+.hello-text {
+  font-weight: 500;
+  font-size: 20px;
+  color: white;
+}
+
+.info-card {
+  border-radius: 20px;
+  background: white;
+  padding: 2.5rem;
+}
+
+.info-title {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.info-subtext {
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--text-secondary);
+}
+
+.info-text {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.final-card {
+  border-radius: 20px;
+  background: white;
+  padding: 2rem;
+}
+
+.final-card-title {
+  font-weight: 500;
+  font-size: 22px;
 }
 </style>

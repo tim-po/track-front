@@ -78,7 +78,7 @@
           </span>
         </b-row>
       </b-col>
-      <button @click="addKeywords" class="profession__button keywords__modal-button">
+      <button @click="addKeywords" class="main-button keywords__modal-button">
         Добавить
       </button>
     </b-modal>

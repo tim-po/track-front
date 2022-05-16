@@ -35,6 +35,7 @@ body {
 }
 
 :root {
+  --text-secondary: #B7B6BC;
   --main-color: #1F1F22;
   --color-secondary: #F3F3FE;
   --color-1: #7CCBF8;

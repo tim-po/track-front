@@ -51,6 +51,28 @@ getters = {
   colors: (state) => {
     return state.colors
   },
+
+  controlTypes: (state) => {
+    let count = 0
+    let controls = {}
+
+    if (Object.keys(state.trajectory).length > 0) {
+      state.trajectory.semesters.forEach(semester => {
+        console.log(semester)
+        for (const key in semester.control_types) {
+          if (controls[key]) {
+            controls[key] += semester.control_types[key]
+            count += semester.control_types[key]
+          } else {
+            controls[key] = semester.control_types[key]
+          }
+        }
+        }
+      )
+    }
+
+    return {count, controls}
+  }
 }
 
 mutations = {
