@@ -74,6 +74,10 @@ export default {
 </script>
 
 <style>
+.landing {
+  height: 100vh;
+}
+
 .landing-card {
   background: white;
   border-radius: 1.25rem;
