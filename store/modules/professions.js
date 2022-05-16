@@ -10,7 +10,8 @@ state = () => ({
     'Менеджмент': 'var(--color-10-light)',
     'Оптика': 'var(--color-6-light)',
     'Биотехнологии': 'var(--color-3-light)',
-  }
+  },
+  selectedProfession: undefined
 })
 
 getters = {
@@ -39,6 +40,16 @@ actions = {
     try {
       const response = await this.$axios.get('/api/professions/')
       context.commit('setProfessions', response.data)
+    } catch {
+      alert('Error')
+    }
+  },
+
+  async getProfession(context, {id}) {
+    try {
+      const response = await this.$axios.get(`/api/professions/${id}/`)
+      console.log(response.data)
+      context.commit('setSelectedProfession', response.data)
     } catch {
       alert('Error')
     }

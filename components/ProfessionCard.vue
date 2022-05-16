@@ -35,6 +35,7 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
+  max-width: 260px;
 }
 
 .professionCard {

@@ -25,8 +25,8 @@
             Ты изучишь
           </div>
           <div class="mt-2">
-            <span class="course-card__keyword-card mr-2 mb-2">
-              Программмирование
+            <span v-for="keyword in course.main_keywords" :key="keyword" class="course-card__keyword-card mr-2 mb-2">
+              {{keyword}}
             </span>
           </div>
           <div class="mt-3">

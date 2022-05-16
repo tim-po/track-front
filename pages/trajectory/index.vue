@@ -53,12 +53,12 @@
         <b-row class="pl-5">
           <b-col>
             <p class="trajectory-small-header">
-              1 семестр
+              Осенний семестр
             </p>
           </b-col>
           <b-col>
             <p class="trajectory-small-header">
-              2 семестр
+              Весенний семестр
             </p>
           </b-col>
         </b-row>
