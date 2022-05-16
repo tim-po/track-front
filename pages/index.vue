@@ -1,7 +1,12 @@
 <template>
   <div class="professionsPageContainer">
     <div class="professionsContainer">
-      <h3 class="profession__title">У нас ты можешь стать</h3>
+      <div class="top-flex">
+        <h3 class="profession__title mr-4">Выбирай подходящее направление</h3>
+        <button v-b-modal.modal1 class="profession__button">
+          Не знаю, что мне подходит
+        </button>
+      </div>
       <div class="profession__container">
         <button
           class="professionCardButton"
@@ -14,9 +19,6 @@
           />
         </button>
       </div>
-      <button v-b-modal.modal1 class="profession__button mb-4">
-        Не знаю, что мне подходит
-      </button>
     </div>
 
     <b-modal content-class="main-modal" hide-footer hide-header id="modal1">
@@ -71,6 +73,14 @@ export default {
 </script>
 
 <style lang="scss">
+.top-flex{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
 .professionCardButton {
   background: none;
   border: none;
@@ -89,6 +99,7 @@ export default {
   grid-column-gap: 24px;
   grid-row-gap: 24px;
   justify-items: center;
+  //min-width: ;
   width: 100%;
 
   margin-bottom: 24px;
@@ -118,6 +129,7 @@ export default {
 }
 
 .professionsPageContainer{
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
