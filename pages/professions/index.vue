@@ -49,6 +49,8 @@ import ProfessionCard from '../../components/ProfessionCard'
 export default {
   name: 'IndexPage',
 
+  layout: 'logo',
+
   components: {
     ProfessionCard
   },
