@@ -1,7 +1,12 @@
 <template>
   <div class="professionsPageContainer">
     <div class="professionsContainer">
-      <h3 class="profession__title">У нас ты можешь стать</h3>
+      <div class="d-flex justify-content-between w-100 align-items-center">
+        <h3 class="profession__title">Выбирай подходящее направление</h3>
+        <button v-b-modal.modal1 class="profession__button mb-4">
+          Не знаю, что мне подходит
+        </button>
+      </div>
       <div class="profession__container">
         <button
           class="professionCardButton"
@@ -14,9 +19,6 @@
           />
         </button>
       </div>
-      <button v-b-modal.modal1 class="profession__button mb-4">
-        Не знаю, что мне подходит
-      </button>
     </div>
 
     <b-modal content-class="main-modal" hide-footer hide-header id="modal1">
