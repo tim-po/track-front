@@ -1,13 +1,16 @@
 <template>
-  <div>
-    <p class="trajectories__link-back" @click="$router.go(-1)">&lt; Выбор ключевых слов</p>
+  <div class="trajectory-choice-page-container pb-3">
+    <div class="trajectories__link-back" @click="$router.go(-1)">
+      <img alt="back" src="/backChevrone.svg"/>
+      <span>Выбор ключевых слов</span>
+    </div>
     <b-card class="trajectories-card mb-3" v-for="trajectory in trajectories" :key="trajectory.id">
       <b-row class="justify-content-between align-items-center" no-gutters>
         <h5 class="trajectories-card__trajectory-header mb-0">
         {{ trajectory.educational_plan }}
         </h5>
         <div>
-          <img src="/trajectories-progress.svg" alt="">
+          <PercentProgress :percent="coverage(trajectory)"/>
           <span class="ml-2">
             {{ Math.round(coverage(trajectory) * 100) }}% совпадений
           </span>
@@ -30,34 +33,10 @@
             Ты сдашь
           </div>
           <div class="my-2 d-flex">
-            <div class="course-card__control-card mr-2 mb-2">
-              <b style="font-size: 18px; font-weight: 600">
-                {{ course.control_types['Экзамен'] ? course.control_types['Экзамен'] : 0 }}
-              </b>
-              <br>
-              Экзамены
-            </div>
-            <div class="course-card__control-card mr-2 mb-2">
-              <b style="font-size: 18px; font-weight: 600">
-                {{ course.control_types['Дифференцированный зачет'] ? course.control_types['Дифференцированный зачет'] : 0 }}
-              </b>
-              <br>
-              Диф.зачет
-            </div>
-            <div class="course-card__control-card mr-2 mb-2">
-              <b style="font-size: 18px; font-weight: 600">
-                {{ course.control_types['Зачет'] ? course.control_types['Зачет'] : 0 }}
-              </b>
-              <br>
-              Зачеты
-            </div>
-            <div class="course-card__control-card mr-2 mb-2">
-              <b style="font-size: 18px; font-weight: 600">
-                {{ course.control_types['Курсовой проект'] ? course.control_types['Курсовой проект'] : 0 }}
-              </b>
-              <br>
-              Курсовые
-            </div>
+            <ControlTypeTile control-type="Экзамены" :count="course.control_types['Экзамен'] || 0"/>
+            <ControlTypeTile control-type="Диф.зачет" :count="course.control_types['Дифференцированный зачет'] || 0"/>
+            <ControlTypeTile control-type="Зачеты" :count="course.control_types['Зачет'] || 0"/>
+            <ControlTypeTile control-type="Курсовые" :count="course.control_types['Курсовой проект'] || 0"/>
           </div>
         </b-card>
       </div>
@@ -70,16 +49,24 @@
             Читать больше на abit.itmo.ru
           </button>
         </div>
-        <button class="button-abit">О программе</button>
+<!--        <button class="button-abit">О программе</button>-->
       </b-row>
     </b-card>
   </div>
 </template>
 
 <script>
+import ControlTypeTile from "@/components/ControlTypeTile";
+import PercentProgress from "@/components/PercentProgress";
+
 export default {
   layout: 'gray',
   name: "Trajectories",
+
+  components: {
+    ControlTypeTile,
+    PercentProgress
+  },
 
   created() {
     if (this.trajectories.length === 0) {
@@ -145,11 +132,23 @@ export default {
 </script>
 
 <style scoped>
+.trajectory-choice-page-container{
+  /*width: 100%;*/
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*align-items: center;*/
+}
+
 .trajectories-card {
   border-radius: 16px;
+  max-width: max-content;
+  margin: auto;
 }
 
 .trajectories__link-back {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
   color: #6E6D79;
   font-weight: 400;
   font-size: 12px;
@@ -163,7 +162,7 @@ export default {
 
 .trajectories-card__courses-row {
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .course-card {
@@ -186,16 +185,6 @@ export default {
   font-size: 12px;
   padding: 8px 12px;
   border-radius: 8px;
-}
-
-.course-card__control-card {
-  background: white;
-  color: #1F1F22;
-  font-weight: 500;
-  font-size: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  width: 100px;
 }
 
 .button-trajectory {

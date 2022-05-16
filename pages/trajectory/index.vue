@@ -38,26 +38,10 @@
           </svg>
         </div>
         <b-row class="mt-1 justify-content-between" no-gutters>
-          <div class="trajectory-card">
-            <span class="control-number">{{ statistic.dif }}</span>
-            <br>
-            <span class="control-type">Диф. зачет</span>
-          </div>
-          <div class="trajectory-card">
-            <span class="control-number">{{ statistic.coursework }}</span>
-            <br>
-            <span class="control-type">Курсовые работы</span>
-          </div>
-          <div class="trajectory-card">
-            <span class="control-number">{{ statistic.exam }}</span>
-            <br>
-            <span class="control-type">Экзамен</span>
-          </div>
-          <div class="trajectory-card">
-            <span class="control-number">{{ statistic.zachet }}</span>
-            <br>
-            <span class="control-type">Зачет</span>
-          </div>
+          <ControlTypeTile control-type="Экзамены" :count="statistic.exam" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Зачеты" :count="statistic.zachet" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Диф.зачет" :count="statistic.dif" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Курсовые" :count="statistic.coursework" additional-classnames="trajectory-card-border"/>
         </b-row>
         <p class="trajectory-small-header">Дисциплины</p>
         <div class="col trajectory-card mt-1">
@@ -191,9 +175,14 @@
 
 <script>
 import {hierarchy, pack} from 'd3-hierarchy'
+import ControlTypeTile from "@/components/ControlTypeTile";
 
 export default {
   name: 'TrajectoryPage',
+
+  components: {
+    ControlTypeTile
+  },
 
   data: () => {
     return {
@@ -475,6 +464,10 @@ svg {
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
+}
+
+.trajectory-card-border {
+  border: 1px solid var(--gray-100);
 }
 
 .trajectory-card {

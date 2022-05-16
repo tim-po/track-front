@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="professionsPageContainer">
     <div class="professionsContainer">
-      <h3 class="profession__title">У нас ты можешь стать лучше</h3>
+      <h3 class="profession__title">У нас ты можешь стать</h3>
       <div class="profession__container">
         <button
           class="professionCardButton"
@@ -117,11 +117,20 @@ export default {
   margin-bottom: 24px;
 }
 
+.professionsPageContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
 .professionsContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  max-width: 1920px;
 }
 
 .profession__button {
