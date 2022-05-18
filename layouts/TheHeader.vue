@@ -1,13 +1,23 @@
 <template>
-  <b-row class="header align-items-center" no-gutters>
-    <img src="/logo.svg" alt="logo" />
-    <p class="mb-0 pl-1">ITMO.TRACK</p>
-  </b-row>
+  <div class="d-flex justify-content-between header align-items-center">
+    <div class="trajectories__link-back" @click="$router.go(-1)">
+      <img alt="back" src="/backChevrone.svg"/>
+      <span>{{ headerData.goBackText }}</span>
+    </div>
+    <img src="/logo.svg" alt="logo"/>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "TheHeader"
+  name: "TheHeaderRight.vue",
+
+  props: {
+    headerData: {
+      type: Object,
+      required: true
+    }
+  },
 }
 </script>
 

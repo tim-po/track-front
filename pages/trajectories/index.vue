@@ -131,7 +131,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .trajectory-choice-page-container{
   /*width: 100%;*/
   /*display: flex;*/
@@ -143,16 +143,6 @@ export default {
   border-radius: 16px;
   max-width: max-content;
   margin: auto;
-}
-
-.trajectories__link-back {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  color: #6E6D79;
-  font-weight: 400;
-  font-size: 12px;
-  cursor: pointer;
 }
 
 .trajectories-card__trajectory-header {

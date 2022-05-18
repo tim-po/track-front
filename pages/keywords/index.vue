@@ -1,85 +1,98 @@
 <template>
-  <div class="keywords">
-    <div class="keywords-customisation-flex">
-      <div class="profession-container" :class="isEditing ? 'editing': ''">
-        <h4 class="mb-3 font-weight-bold">Твоя профессия</h4>
-        <div class="keywords__card">
-          <div class="profession-data" :class="isEditing ? 'editing': ''">
-            <h5 class="profession-name">{{ profession ? profession.name : '' }}</h5>
-            <p class="mb-0">
-              {{ profession ? profession.description : '' }}
-            </p>
+    <div class="keywords">
+      <div class="keywords-customisation-flex">
+        <div class="profession-container" :class="isEditing ? 'editing': ''">
+          <h5 class="mb-3 font-weight-bold">Твоя профессия</h5>
+          <div class="keywords__card" :class="isEditing ? 'editing': ''">
+            <div class="profession-data" :class="isEditing ? 'editing': ''">
+              <h5 class="profession-name">{{ profession ? profession.name : '' }}</h5>
+              <p class="mb-0">
+                {{ profession ? profession.description : '' }}
+              </p>
+            </div>
+            <img class="profession-image" :class="isEditing ? 'editing': ''" :src="profession ? profession.icon: ''"
+                 alt="Profession Image">
           </div>
-          <img class="profession-image" :class="isEditing ? 'editing': ''" :src="profession ? profession.icon: ''" alt="Profession Image">
-        </div>
-        <h5 class="mb-4 mt-5 font-weight-bold">Надо изучить</h5>
-        <b-row class="keywords__required" no-gutters>
-          <Keyword  v-for="keyword in profession ? profession.related_keywords : []" :key="keyword" :deletable="isEditing" :keyword="keyword" bg-color="'var(--color-secondary)'" @deleteSelf="deleteKeyword(keyword)"/>
-        </b-row>
-      </div>
-      <div class="editor" :class="isEditing ? 'extended': ''">
-        <div class="editor-inner-container">
-          <h3 class="mb-3">Добавь то что хочешь изучить</h3>
-          <b-input
-            class="keywords-input shadow-none"
-            placeholder="Введи ключевое слово"
-            v-model="searchQuery"
-            @focus="searching()"
-            @keyup="searchKeywords(searchQuery)">
-          </b-input>
-          <div class="add-keywords-search" :class="searchQuery !== '' ? 'extended': ''">
-            <b-row class="keywords-modal_add-keywords" no-gutters>
-              <span
-                class="keywords__modal-keywords keywords__modal-keywords_selected"
-                v-for="keyword in keywordsToAdd"
-                :key="keyword.text"
-                @click="selectKeyword(keyword)"
-                v-if="!keywordInArray(keyword, queryKeywords)"
-              >
-                {{ keyword.text }}
-              </span>
-              <span
-                class="keywords__modal-keywords "
-                v-for="keyword in queryKeywords"
-                :key="keyword.text"
-                @click="selectKeyword(keyword)"
-                :class="{'keywords__modal-keywords_selected': keywordInArray(keyword, keywordsToAdd)}"
-                v-show="!keywordInArray(keyword, addedKeywords)"
-              >
-                {{ keyword.text }}
-              </span>
-            </b-row>
-            <button @click="addKeywords" class="button-secondary in-modal">
-              Добавить
-            </button>
-          </div>
-          <div class="keywords__subtext">Например: язык программирования C#</div>
-
-          <b-row class="keywords__added" no-gutters>
-            <Keyword  v-for="keyword in addedKeywords" :key="keyword" :deletable="true" :keyword="keyword" :bg-color="'var(--color-secondary)'" @deleteSelf="deleteAddedKeyword(keyword)"/>
+          <h5 class="mb-4 mt-5 font-weight-bold">Надо изучить</h5>
+          <b-row class="keywords__required" no-gutters>
+            <Keyword v-for="keyword in keywords" :key="keyword.text"
+                     :deletable="isEditing" :keyword="keyword" bg-color="'var(--color-secondary)'"
+                     @deleteSelf="deleteKeyword(keyword)"/>
           </b-row>
         </div>
+        <div class="editor" :class="isEditing ? 'extended': ''">
+          <div class="editor-inner-container">
+            <h4 class="mb-3 font-weight-bold">Добавь то что хочешь изучить</h4>
+            <b-input
+              class="keywords-input shadow-none"
+              placeholder="Введи ключевое слово"
+              v-model="searchQuery"
+              @focus="searching()"
+              @keyup="searchKeywords(searchQuery)">
+            </b-input>
+            <div class="add-keywords-search" :class="searchQuery !== '' ? 'extended': ''">
+              <b-row class="keywords-modal_add-keywords" no-gutters>
+                <span
+                  class="keywords__modal-keywords keywords__modal-keywords_selected"
+                  v-for="keyword in keywordsToAdd"
+                  :key="keyword.text"
+                  @click="selectKeyword(keyword)"
+                  v-if="!keywordInArray(keyword, queryKeywords)"
+                >
+                  {{ keyword.text }}
+                </span>
+                <span
+                  class="keywords__modal-keywords "
+                  v-for="keyword in queryKeywords"
+                  :key="keyword.text"
+                  @click="selectKeyword(keyword)"
+                  :class="{'keywords__modal-keywords_selected': keywordInArray(keyword, keywordsToAdd)}"
+                  v-show="!keywordInArray(keyword, addedKeywords)"
+                >
+                  {{ keyword.text }}
+                </span>
+              </b-row>
+              <button @click="addKeywords" class="button-secondary in-modal">
+                Добавить
+              </button>
+            </div>
+            <div class="keywords__subtext">Например: язык программирования C#</div>
+
+            <div v-if="addedKeywords ? addedKeywords.length === 0 : true" class="text-center mt-4">
+              <img src="/lupa.svg" alt="" />
+              <div class="mt-3">Ищи и добавляй навыки, которые хочешь получить в ИТМО</div>
+            </div>
+
+            <b-row class="keywords__added" no-gutters>
+              <Keyword v-for="keyword in addedKeywords" :key="keyword" :deletable="true" :keyword="keyword"
+                       :bg-color="'var(--color-secondary)'" @deleteSelf="deleteAddedKeyword(keyword)"/>
+            </b-row>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-buttons" :class="isEditing ? 'editing': ''">
+        <button class="button-secondary" @click="startEditing">
+          {{
+            isEditing ?
+              'Очистить выбор' :
+              'Изменить ключевые слова'
+          }}
+        </button>
+        <button class="button-primary" @click="sendKeywords">Мне все нравится</button>
       </div>
     </div>
-
-    <div class="bottom-buttons" :class="isEditing ? '': 'centered'">
-      <button class="button-secondary" @click="startEditing">
-        {{ isEditing ?
-          'Очистить выбор':
-          'Изменить ключевые слова'
-        }}
-      </button>
-      <button class="button-primary" @click="sendKeywords">Мне все нравится</button>
-    </div>
-  </div>
 </template>
 
 <script>
-
 import Keyword from "@/components/Keyword";
 
 export default {
   name: "KeywordsPage",
+
+  headerData: {
+    goBackText: 'Все профессии'
+  },
 
   components: {
     Keyword
@@ -296,6 +309,11 @@ export default {
   justify-content: space-between;
 }
 
+.keywords__card.editing {
+  border-radius: 16px;
+  padding: 24px;
+}
+
 .keywords__more-button {
   color: #6E6D79;
   font-size: 0.75rem;
@@ -320,9 +338,19 @@ export default {
   background: var(--color-7-light);
 }
 
-.bottom-buttons{
-  transition: all 0.5s;
+.bottom-buttons {
+  position: absolute;
+  bottom: 3rem;
+  right: calc((100% - 900px)/2);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 900px;
+  margin-top: 22px;
+}
 
+.bottom-buttons.editing{
+  transition: all 0.5s;
   display: flex;
   width: 100%;
   max-width: 315px;
@@ -331,12 +359,6 @@ export default {
   position: absolute;
   bottom: 3rem;
   right: 40px;
-}
-
-.bottom-buttons.centered{
-  max-width: 600px;
-  bottom: 5rem;
-  right: calc(50% - 300px);
 }
 
 .button-primary {
@@ -441,11 +463,5 @@ export default {
 .editor-inner-container{
   position: relative;
   min-width: 400px;
-}
-
-.keywords{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 </style>

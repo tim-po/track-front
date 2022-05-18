@@ -1,6 +1,6 @@
 <template>
-  <div style="background-color: #F1F2F8;">
-    <TheHeader />
+  <div style="background-color: #F1F2F8; min-height: 100vh;">
+    <TheHeaderLeft />
     <div class="content">
       <Nuxt />
     </div>
@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import TheHeader from "./TheHeader";
+import TheHeaderLeft from "./TheHeaderLeft";
 
 export default {
   name: "gray",
 
   components: {
-    TheHeader
+    TheHeaderLeft
   }
 }
 </script>
