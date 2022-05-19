@@ -219,7 +219,6 @@ export default {
 }
 
 .profession-image.editing{
-  transition: all 0.5s;
   max-width: 0;
   height: 0;
 }

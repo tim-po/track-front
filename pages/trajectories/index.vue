@@ -1,9 +1,5 @@
 <template>
   <div class="trajectory-choice-page-container pb-3">
-    <div class="trajectories__link-back" @click="$router.go(-1)">
-      <img alt="back" src="/backChevrone.svg"/>
-      <span>Выбор ключевых слов</span>
-    </div>
     <b-card class="trajectories-card mb-3" v-for="trajectory in trajectories" :key="trajectory.id">
       <b-row class="justify-content-between align-items-center" no-gutters>
         <h5 class="trajectories-card__trajectory-header mb-0">
@@ -60,8 +56,12 @@ import ControlTypeTile from "@/components/ControlTypeTile";
 import PercentProgress from "@/components/PercentProgress";
 
 export default {
-  layout: 'gray',
+  layout: 'grayLogoRight',
   name: "Trajectories",
+
+  headerData: {
+    goBackText: 'Выбор ключевых слов'
+  },
 
   components: {
     ControlTypeTile,
