@@ -1,3 +1,5 @@
+import keyword from "../../components/Keyword";
+
 let state = {}
 let getters = {}
 let mutations = {}
@@ -37,6 +39,7 @@ mutations = {
   },
 
   deleteKeyword: (state, payload) => {
+    console.log(payload)
     state.keywords = state.keywords.filter(word => word !== payload)
   },
 
@@ -58,7 +61,7 @@ actions = {
         const response = await this.$axios.get(`/api/keywords/?text_like=${query}`)
         context.commit('setQueryKeywords', response.data)
       } catch {
-        alert('Error in keywords' + query)
+        console.log('Error in keywords' + query)
       }
     }
   },

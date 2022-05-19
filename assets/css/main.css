@@ -63,3 +63,13 @@ body {
   --gray-10: #F8F8F8;
   --gray-dark: #B1AFC4;
 }
+
+.trajectories__link-back {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  color: #6E6D79;
+  font-weight: 400;
+  font-size: 12px;
+  cursor: pointer;
+}

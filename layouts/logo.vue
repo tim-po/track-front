@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TheHeader />
+    <TheHeaderLeft />
     <div class="content">
       <Nuxt />
     </div>
@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import TheHeader from "./TheHeader";
+import TheHeaderLeft from "./TheHeaderLeft";
 
 export default {
   name: "logo",
 
   components: {
-    TheHeader
+    TheHeaderLeft
   }
 }
 </script>
