@@ -30,7 +30,7 @@ getters = {
 
   course: (state) => (number) => {
     if (Object.keys(state.trajectory).length > 0) {
-      return state.trajectory.semesters.filter(el => el.semester === number * 2 - 1 || el.semester === number * 2)
+      return state.trajectory.courses.find(el => el.course === number)
     }
   },
 
@@ -38,40 +38,16 @@ getters = {
     let courses = []
 
     if (Object.keys(state.trajectory).length > 0) {
-      state.trajectory.semesters.forEach(semester => {
-          if (semester.semester % 2 !== 0) {
-            courses.push(semester.semester / 2 + 0.5)
-          }
-        }
-      )
+      state.trajectory.courses.forEach(el => {
+        courses.push(el.course)
+      })
     }
+
     return courses
   },
 
   colors: (state) => {
     return state.colors
-  },
-
-  controlTypes: (state) => {
-    let count = 0
-    let controls = {}
-
-    if (Object.keys(state.trajectory).length > 0) {
-      state.trajectory.semesters.forEach(semester => {
-        console.log(semester)
-        for (const key in semester.control_types) {
-          if (controls[key]) {
-            controls[key] += semester.control_types[key]
-            count += semester.control_types[key]
-          } else {
-            controls[key] = semester.control_types[key]
-          }
-        }
-        }
-      )
-    }
-
-    return {count, controls}
   }
 }
 

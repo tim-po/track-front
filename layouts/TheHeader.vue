@@ -23,6 +23,6 @@ export default {
 
 <style scoped>
 .header {
-  padding: 1.5rem 2.5rem;
+  padding: 1rem 2.5rem;
 }
 </style>

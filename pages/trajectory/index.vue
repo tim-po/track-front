@@ -15,7 +15,7 @@
       </div>
     </b-row>
     <hr class="header-divider">
-    <b-row>
+    <b-row v-if="this.course">
       <b-col cols="4">
         <p class="trajectory-small-header">Статистика</p>
         <div class="trajectory-card">
@@ -38,15 +38,15 @@
           </svg>
         </div>
         <b-row class="mt-1 justify-content-between" no-gutters>
-          <ControlTypeTile control-type="Экзамены" :count="statistic.exam" additional-classnames="trajectory-card-border"/>
-          <ControlTypeTile control-type="Зачеты" :count="statistic.zachet" additional-classnames="trajectory-card-border"/>
-          <ControlTypeTile control-type="Диф.зачет" :count="statistic.dif" additional-classnames="trajectory-card-border"/>
-          <ControlTypeTile control-type="Курсовые" :count="statistic.coursework" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Экзамены" :count="course.control_type_counts['Экзамен'] ? course.control_type_counts['Экзамен'] : 0" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Зачеты" :count="course.control_type_counts['Зачет'] ? course.control_type_counts['Зачет'] : 0" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Диф.зачет" :count="course.control_type_counts['Дифференцированный зачет'] ? course.control_type_counts['Дифференцированный зачет'] : 0" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Курсовые" :count="course.control_type_counts['Курсовая работа'] ? course.control_type_counts['Курсовая работа'] : 0" additional-classnames="trajectory-card-border"/>
         </b-row>
         <p class="trajectory-small-header">Дисциплины</p>
         <div class="col trajectory-card mt-1">
-          <b-row class="justify-content-between" no-gutters>Обязательные <span>{{ statistic.necessary }}</span></b-row>
-          <b-row class="justify-content-between mt-2" no-gutters>Выборные <span>{{ statistic.selective }}</span></b-row>
+          <b-row class="justify-content-between" no-gutters>Обязательные <span>{{ course.necessity_counts.necessary ? course.necessity_counts.necessary : 0 }}</span></b-row>
+          <b-row class="justify-content-between mt-2" no-gutters>Выборные <span>{{ course.necessity_counts.chosen ? course.necessity_counts.chosen : 0 }}</span></b-row>
         </div>
       </b-col>
       <b-col cols="8">
@@ -62,14 +62,14 @@
             </p>
           </b-col>
         </b-row>
-        <div class="class-card" v-for="el in classes" :key="el" :style="'background:' + colors[el]">
+        <div class="class-card" v-for="sphere in course.classes" :key="el" :style="'background:' + colors[sphere.name]">
           <p class="class-header">
-            {{ el }}
+            {{ sphere.name }}
           </p>
           <b-row>
-            <b-col v-for="index in 2" :key="index">
+            <b-col v-for="index in ['first_semesters_disciplines', 'second_semesters_disciplines']" :key="index">
               <div v-b-modal:modal-discipline class="modal-card-button"
-                   v-for="discipline in course[index-1].disciplines" :key="discipline.id">
+                   v-for="discipline in sphere[index]" :key="discipline.id">
                 <div @click="getModal(discipline.id)" class="discipline-card" v-if="discipline.class.name === el">
                   <b-row no-gutters class="justify-content-between">
                     <div
@@ -190,6 +190,10 @@ export default {
     }
   },
 
+  headerData: {
+    goBackText: 'Все траектории'
+  },
+
   created() {
     if (Object.keys(this.trajectory).length === 0) {
       this.$store.dispatch('modules/trajectory/getTrajectory', { query: +this.$route.query.id, mode: 'set'})
@@ -228,24 +232,12 @@ export default {
       let amount = []
 
       if (this.course !== undefined) {
-        console.log(this.course)
-        this.course.forEach(semester => {
-          semester.disciplines.forEach(discipline => {
-            if (amount.find(el => el.name === discipline.class.name) !== undefined) {
-              for (const obj of amount) {
-                if (obj.name === discipline.class.name) {
-                  obj.amount += 1;
-                  break;
-                }
-              }
-            } else {
-              amount.push({
-                name: discipline.class.name,
-                amount: 1,
-              })
-            }
+        for (const klass in this.course.classes_percentages) {
+          amount.push({
+            name: klass,
+            amount: Math.round(this.course.classes_percentages[klass] * 100),
           })
-        })
+        }
       }
 
       return amount
@@ -263,59 +255,8 @@ export default {
       return this.$store.getters['modules/trajectory/courses']
     },
 
-    classes() {
-      let classes = []
-
-      if (this.course !== undefined) {
-        this.course.forEach(semester => {
-          semester.classes.forEach((el) => {
-            if (!classes.includes(el.klass)) {
-              classes.push(el.klass)
-            }
-          })
-        })
-      }
-
-      return classes
-    },
-
     colors() {
       return this.$store.getters['modules/trajectory/colors']
-    },
-
-    statistic() {
-      let necessary = 0
-      let selective = 0
-      let exam = 0
-      let dif = 0
-      let zachet = 0
-      let coursework = 0
-
-      if (this.course !== undefined) {
-
-        this.course.forEach(semester => {
-          semester.disciplines.forEach(discipline => {
-            if (discipline.necessity) {
-              necessary += 1
-            } else {
-              selective += 1
-            }
-
-            if (discipline.control === "Экзамен") {
-              exam += 1
-            } else if (discipline.control === "Зачет") {
-              zachet += 1
-            } else if (discipline.control === "Дифференцированный зачет") {
-              dif += 1
-            } else if (discipline.control === "Курсовой проект") {
-              coursework += 1
-            }
-          })
-        })
-
-      }
-
-      return {selective, necessary, dif, zachet, coursework, exam}
     },
 
     discipline() {
