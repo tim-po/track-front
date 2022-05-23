@@ -33,9 +33,9 @@
             Ты сдашь
           </div>
           <div class="my-2 d-flex">
-            <ControlTypeTile control-type="Экзамены" :count="course.control_types_count['Экзамен'] || 0"/>
-            <ControlTypeTile control-type="Диф.зачет" :count="course.control_types_count['Дифференцированный зачет'] || 0"/>
-            <ControlTypeTile control-type="Зачеты" :count="course.control_types_count['Зачет'] || 0"/>
+            <ControlTypeTile class="mr-1" control-type="Экзамены" :count="course.control_types_count['Экзамен'] || 0"/>
+            <ControlTypeTile class="mr-1" control-type="Диф.зачет" :count="course.control_types_count['Дифференцированный зачет'] || 0"/>
+            <ControlTypeTile class="mr-1" control-type="Зачеты" :count="course.control_types_count['Зачет'] || 0"/>
             <ControlTypeTile control-type="Курсовые" :count="course.control_types_count['Курсовой проект'] || 0"/>
           </div>
         </b-card>
@@ -45,9 +45,11 @@
           <button @click="trajectoryChosen(trajectory)" class="button-trajectory main-button mr-2">
             Смотреть траекторию
           </button>
-          <button class="button-abit">
-            Читать больше на abit.itmo.ru
-          </button>
+          <a v-if="trajectory.abit" :href="trajectory.abit">
+            <button class="button-abit">
+              Читать больше на abit.itmo.ru
+            </button>
+          </a>
         </div>
 <!--        <button class="button-abit">О программе</button>-->
       </b-row>

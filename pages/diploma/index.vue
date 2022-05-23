@@ -54,8 +54,8 @@
         </b-card>
         <b-card class="diploma-card mt-4">
           <h6 class="mb-3">Сдам</h6>
-          <div class="d-flex">
-            <b-card v-for="(item, key) in diploma.control_types_count" :key="key" class="control-type-card mr-3">
+          <div class="d-flex flex-fill justify-content-between">
+            <b-card v-for="(item, key) in diploma.control_types_count" :key="key" class="control-type-card mr-3 flex-grow-1">
               <h4>{{ item }}</h4>
               <h6>{{ key }}</h6>
             </b-card>
@@ -147,7 +147,7 @@ export default {
   min-height: 150px;
   border-radius: 16px;
   color: white;
-  width: 200px;
+  width: 196px;
   background: #78A3EC;
 }
 

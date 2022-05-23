@@ -16,7 +16,6 @@ export default {
 </script>
 
 <style scoped>
-
 .course-card__control-card {
   background: white;
   color: #1F1F22;
@@ -24,7 +23,6 @@ export default {
   font-size: 12px;
   padding: 12px 16px;
   border-radius: 12px;
-  min-width: 100px;
+  min-width: 94px;
 }
-
 </style>

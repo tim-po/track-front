@@ -15,7 +15,7 @@
       </div>
     </b-row>
     <hr class="header-divider">
-    <b-row v-if="this.course">
+    <b-row v-if="course">
       <b-col cols="4">
         <h6 class="mt-3">Статистика</h6>
         <div class="trajectory-card">
