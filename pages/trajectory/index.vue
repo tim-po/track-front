@@ -31,7 +31,7 @@
                   }"
             >
               <circle :r="klass.r" fill="#F3F3F4"></circle>
-              <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}%</text>
+              <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}</text>
               <text dy="12px">{{
                   klass.data.name.length > 20 ? klass.data.name.substring(0, 17) : klass.data.name
                 }}
@@ -40,15 +40,15 @@
           </svg>
         </div>
         <b-row class="mt-1 justify-content-between" no-gutters>
-          <ControlTypeTile control-type="Экзамены" :count="course.control_type_counts['Экзамен'] ? course.control_type_counts['Экзамен'] : 0" additional-classnames="trajectory-card-border"/>
-          <ControlTypeTile control-type="Зачеты" :count="course.control_type_counts['Зачет'] ? course.control_type_counts['Зачет'] : 0" additional-classnames="trajectory-card-border"/>
-          <ControlTypeTile control-type="Диф.зачет" :count="course.control_type_counts['Дифференцированный зачет'] ? course.control_type_counts['Дифференцированный зачет'] : 0" additional-classnames="trajectory-card-border"/>
-          <ControlTypeTile control-type="Курсовые" :count="course.control_type_counts['Курсовая работа'] ? course.control_type_counts['Курсовая работа'] : 0" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Экзамены" :count="course.control_type_count['Экзамен'] ? course.control_type_count['Экзамен'] : 0" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Зачеты" :count="course.control_type_count['Зачет'] ? course.control_type_count['Зачет'] : 0" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Диф.зачет" :count="course.control_type_count['Дифференцированный зачет'] ? course.control_type_count['Дифференцированный зачет'] : 0" additional-classnames="trajectory-card-border"/>
+          <ControlTypeTile control-type="Курсовые" :count="course.control_type_count['Курсовая работа'] ? course.control_type_count['Курсовая работа'] : 0" additional-classnames="trajectory-card-border"/>
         </b-row>
         <p class="trajectory-small-header">Дисциплины</p>
         <div class="col trajectory-card mt-1">
-          <b-row class="justify-content-between" no-gutters>Обязательные <span>{{ course.necessity_counts.necessary ? course.necessity_counts.necessary : 0 }}</span></b-row>
-          <b-row class="justify-content-between mt-2" no-gutters>Выборные <span>{{ course.necessity_counts.chosen ? course.necessity_counts.chosen : 0 }}</span></b-row>
+          <b-row class="justify-content-between" no-gutters>Обязательные <span>{{ course.necessity_count.necessary ? course.necessity_count.necessary : 0 }}</span></b-row>
+          <b-row class="justify-content-between mt-2" no-gutters>Выборные <span>{{ course.necessity_count.chosen ? course.necessity_count.chosen : 0 }}</span></b-row>
         </div>
       </b-col>
       <b-col cols="8">
@@ -234,10 +234,10 @@ export default {
       let amount = []
 
       if (this.course !== undefined) {
-        for (const klass in this.course.classes_percentages) {
+        for (const klass in this.course.classes_count) {
           amount.push({
             name: klass,
-            amount: Math.round(this.course.classes_percentages[klass] * 100),
+            amount: this.course.classes_count[klass],
           })
         }
       }

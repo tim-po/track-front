@@ -83,6 +83,15 @@ actions = {
     }
   },
 
+  async getTrajectories(context, {query}) {
+    try {
+      const response = await this.$axios.get(`/api/trajectories/?ids=${query[0]},${query[1]},${query[2]}`)
+      context.commit('setTrajectories', response.data)
+    } catch {
+      alert('Error in trajectory request')
+    }
+  },
+
   async getDiscipline(context, query) {
     try {
       const response = await this.$axios.get(`/api/trajectory_disciplines/${query}/`)
