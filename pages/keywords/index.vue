@@ -96,10 +96,6 @@ import Keyword from "@/components/Keyword";
 export default {
   name: "KeywordsPage",
 
-  headerData: {
-    goBackText: 'Все профессии'
-  },
-
   components: {
     Keyword
   },
@@ -115,6 +111,7 @@ export default {
   },
 
   async created() {
+    this.$store.commit('modules/header/setHeaderText', 'Все профессии')
     await this.$store.dispatch('modules/professions/getProfession', {id: +this.$route.query.id})
     this.$store.commit('modules/keywords/setKeywords', this.profession.related_keywords)
     this.calculateRequiredLimit()

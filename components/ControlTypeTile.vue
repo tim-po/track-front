@@ -1,5 +1,5 @@
 <template>
-  <div class="course-card__control-card mr-2 mb-2" :class="additionalClassnames">
+  <div class="course-card__control-card" :class="additionalClassnames">
     {{ controlType }}
     <br/>
     <b style="font-size: 18px; font-weight: 600">
@@ -23,8 +23,8 @@ export default {
   font-weight: 500;
   font-size: 12px;
   padding: 12px 16px;
-  border-radius: 8px;
-  width: 100px;
+  border-radius: 12px;
+  min-width: 100px;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="diploma-page">
     <b-row no-gutters class="justify-content-between mb-0 align-items-center">
-      <h6 class="mb-0">{{ trajectory.educational_plan }}</h6>
+      <h5 class="mb-0">{{ diploma ? diploma.educational_plan : '' }}</h5>
       <div>
         <button
           :class="{'course-button-active': number === currentCourse}"
@@ -15,17 +15,19 @@
       </div>
     </b-row>
     <hr class="header-divider">
-    <b-row class="mt-3">
+    <b-row v-if="diploma" class="mt-3">
       <b-col cols="4">
         <b-card class="diploma-card">
           <h6 class="mb-2">Высшее образование</h6>
-          <div class="small mb-1">Университет ИТМО, г. Санкт-Петербург</div>
-          <div class="small">Бакалавриат</div>
+          <div class="text-small mb-1">Университет ИТМО, г. Санкт-Петербург</div>
+          <div class="text-small">Бакалавриат</div>
         </b-card>
         <b-card class="diploma-card mt-4">
           <h6 class="mb-2">Освою ключевые навыки</h6>
           <div class="mt-3">
-            <Keyword :deletable="false" :keyword="{ text: 'HTML' }" bg-color="'var(--color-secondary)'"/>
+            <b-row no-gutters>
+              <Keyword v-for="keyword in diploma.main_keywords" :key="keyword" :deletable="false" :keyword="{ text: keyword }" bg-color="#EBEBFF"/>
+            </b-row>
           </div>
         </b-card>
         <b-card class="diploma-card mt-4">
@@ -42,18 +44,22 @@
       </b-col>
       <b-col cols="8">
         <b-card class="diploma-card">
-          <h6 class="mb-2">Изучу 52 дисциплины</h6>
-          <b-card class="control-type-card">
-            <h4>24</h4>
-            <h6>Экзамен</h6>
-          </b-card>
+          <h6 class="mb-3">Изучу 52 дисциплины</h6>
+          <div class="d-flex flex-wrap">
+            <b-card v-for="(item, key) in diploma.classes_count" :key="key" :style="'background:' + colors[key]" class="classes-type-card mb-3 mr-3">
+              <h2>{{ item }}</h2>
+              <span class="text-small">{{ key }}</span>
+            </b-card>
+          </div>
         </b-card>
         <b-card class="diploma-card mt-4">
-          <h6 class="mb-2">Сдам</h6>
-          <b-card class="control-type-card">
-            <h4>24</h4>
-            <h6>Экзамен</h6>
-          </b-card>
+          <h6 class="mb-3">Сдам</h6>
+          <div class="d-flex">
+            <b-card v-for="(item, key) in diploma.control_types_count" :key="key" class="control-type-card mr-3">
+              <h4>{{ item }}</h4>
+              <h6>{{ key }}</h6>
+            </b-card>
+          </div>
         </b-card>
       </b-col>
     </b-row>
@@ -67,32 +73,34 @@ export default {
   layout: 'grayLogoRight',
   name: "DiplomaPage",
 
+  data: () => {
+    return {
+      currentCourse: 4
+    }
+  },
+
   components: {
     Keyword
   },
 
-  headerData: {
-    goBackText: 'К траектории'
-  },
-
   created() {
-    if (Object.keys(this.trajectory).length === 0) {
-      this.$store.dispatch('modules/trajectory/getTrajectory', { query: +this.$route.query.id, mode: 'set'})
-    }
+    this.$store.commit('modules/header/setHeaderText', 'К траектории')
+    this.$store.dispatch('modules/trajectory/getDiploma', { query: this.$route.query.id})
+    this.$store.dispatch('modules/trajectory/getTrajectory', { query: this.$route.query.id})
   },
 
   computed: {
-    trajectory() {
-      return this.$store.getters['modules/trajectory/trajectory']
-    },
-
-    controlTypes() {
-      return this.$store.getters['modules/trajectory/controlTypes']
+    diploma() {
+      return this.$store.getters['modules/trajectory/diploma']
     },
 
     courses() {
       return this.$store.getters['modules/trajectory/courses']
-    }
+    },
+
+    colors() {
+      return this.$store.getters['modules/trajectory/colors']
+    },
   }
 }
 </script>
@@ -135,6 +143,14 @@ export default {
   width: 160px;
 }
 
+.classes-type-card {
+  min-height: 150px;
+  border-radius: 16px;
+  color: white;
+  width: 200px;
+  background: #78A3EC;
+}
+
 .header-divider {
   padding: 0;
   margin: 0;
@@ -151,5 +167,9 @@ export default {
 .secondary-button-diploma {
   font-size: 14px;
   padding: 10px 12px;
+}
+
+.text-small {
+  font-size: 12px;
 }
 </style>

@@ -63,16 +63,13 @@ export default {
   layout: 'grayLogoRight',
   name: "Trajectories",
 
-  headerData: {
-    goBackText: 'Выбор ключевых слов'
-  },
-
   components: {
     ControlTypeTile,
     PercentProgress
   },
 
   created() {
+    this.$store.commit('modules/header/setHeaderText', 'Выбор ключевых слов')
     if (this.trajectories.length === 0) {
       let trajectoriesIds = JSON.parse(this.$route.query.ids)
       this.$store.dispatch('modules/trajectory/getTrajectories', {query: trajectoriesIds})

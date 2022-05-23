@@ -1,6 +1,6 @@
 <template>
   <div class="grayBackground">
-    <TheHeader :header-data="headerData"/>
+    <TheHeader/>
     <div class="content">
       <Nuxt/>
     </div>
@@ -15,14 +15,6 @@ export default {
 
   components: {
     TheHeader
-  },
-
-  computed: {
-    headerData() {
-      return this.$route.matched.map(r => {
-        return r.components.default.options.headerData
-      })[0]
-    }
   }
 }
 </script>

@@ -7,6 +7,7 @@ state = () => ({
   trajectory: {},
   trajectories: [],
   discipline: null,
+  diploma: null,
   colors: {
     "программирование и информационные технологии": "#7BA3E7",
     "soft-skills": "#F49987",
@@ -27,6 +28,8 @@ getters = {
   trajectories: (state) => state.trajectories,
   trajectory: (state) => state.trajectory,
   discipline: (state) => state.discipline,
+  diploma: (state) => state.diploma,
+
 
   course: (state) => (number) => {
     if (Object.keys(state.trajectory).length > 0) {
@@ -60,6 +63,10 @@ mutations = {
     state.trajectories = payload
   },
 
+  setDiploma: (state, payload) => {
+    state.diploma = payload
+  },
+
   pushTrajectories: (state, payload) => {
     state.trajectories.push(payload)
   },
@@ -80,6 +87,15 @@ actions = {
       }
     } catch {
       alert('Error in trajectory request')
+    }
+  },
+
+  async getDiploma(context, {query}) {
+    try {
+      const response = await this.$axios.get(`/api/trajectories/${query}/diploma/`)
+      context.commit('setDiploma', response.data)
+    } catch {
+      alert('Error in diploma request')
     }
   },
 

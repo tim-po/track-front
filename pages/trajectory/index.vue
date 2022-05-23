@@ -1,7 +1,7 @@
 <template>
   <div class="trajectory-page">
     <b-row no-gutters class="justify-content-between mb-0 align-items-center">
-      <h6 class="mb-0">{{ trajectory.educational_plan }}</h6>
+      <h5 class="mb-0">{{ trajectory.educational_plan }}</h5>
       <div>
         <button
           :class="{'course-button-active': number === currentCourse}"
@@ -11,15 +11,13 @@
           @click="currentCourse = number">
           {{ number }} Курс
         </button>
-        <Nuxt-link to="/diploma">
-          <button class="course-button-diploma mr-2 ml-3">Диплом</button>
-        </Nuxt-link>
+        <button class="course-button-diploma mr-2 ml-3" @click="$router.push({path: '/diploma', query: {id: trajectory.id }})">Диплом</button>
       </div>
     </b-row>
     <hr class="header-divider">
     <b-row v-if="this.course">
       <b-col cols="4">
-        <p class="trajectory-small-header">Статистика</p>
+        <h6 class="mt-3">Статистика</h6>
         <div class="trajectory-card">
           <svg width="400" height="400">
             <g
@@ -33,19 +31,19 @@
               <circle :r="klass.r" fill="#F3F3F4"></circle>
               <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}</text>
               <text dy="12px">{{
-                  klass.data.name.length > 20 ? klass.data.name.substring(0, 17) : klass.data.name
+                  klass.data.name.length > 20 ? klass.data.name.substring(0, 15) : klass.data.name
                 }}
               </text>
             </g>
           </svg>
         </div>
-        <b-row class="mt-1 justify-content-between" no-gutters>
+        <b-row class="mt-2 justify-content-between" no-gutters>
           <ControlTypeTile control-type="Экзамены" :count="course.control_type_count['Экзамен'] ? course.control_type_count['Экзамен'] : 0" additional-classnames="trajectory-card-border"/>
           <ControlTypeTile control-type="Зачеты" :count="course.control_type_count['Зачет'] ? course.control_type_count['Зачет'] : 0" additional-classnames="trajectory-card-border"/>
           <ControlTypeTile control-type="Диф.зачет" :count="course.control_type_count['Дифференцированный зачет'] ? course.control_type_count['Дифференцированный зачет'] : 0" additional-classnames="trajectory-card-border"/>
           <ControlTypeTile control-type="Курсовые" :count="course.control_type_count['Курсовая работа'] ? course.control_type_count['Курсовая работа'] : 0" additional-classnames="trajectory-card-border"/>
         </b-row>
-        <p class="trajectory-small-header">Дисциплины</p>
+        <h6 class="mt-4">Дисциплины</h6>
         <div class="col trajectory-card mt-1">
           <b-row class="justify-content-between" no-gutters>Обязательные <span>{{ course.necessity_count.necessary ? course.necessity_count.necessary : 0 }}</span></b-row>
           <b-row class="justify-content-between mt-2" no-gutters>Выборные <span>{{ course.necessity_count.chosen ? course.necessity_count.chosen : 0 }}</span></b-row>
@@ -54,12 +52,12 @@
       <b-col cols="8">
         <b-row class="pl-5">
           <b-col>
-            <p class="trajectory-small-header">
+            <p class="trajectory-small-header mt-3">
               Осенний семестр
             </p>
           </b-col>
           <b-col>
-            <p class="trajectory-small-header">
+            <p class="trajectory-small-header mt-3">
               Весенний семестр
             </p>
           </b-col>
@@ -197,6 +195,7 @@ export default {
   },
 
   created() {
+    this.$store.commit('modules/header/setHeaderText', 'Все траектории')
     if (Object.keys(this.trajectory).length === 0) {
       this.$store.dispatch('modules/trajectory/getTrajectory', { query: +this.$route.query.id, mode: 'set'})
     }
@@ -271,7 +270,6 @@ export default {
       this.$store.dispatch('modules/trajectory/getDiscipline', id)
     },
 
-
     keywordInArray (keyword, array) {
       for (let i = 0; i < array.length; i++) {
         if (array[i].text === keyword.text) {
@@ -300,6 +298,25 @@ svg {
   text-anchor: middle;
   font-weight: 400;
   font-size: 10px;
+}
+
+circle {
+  transition: 0.3s;
+}
+
+text {
+  transition: 0.3s;
+}
+
+.circles:hover circle {
+  transition: 0.3s;
+  fill: #8596ED;
+}
+
+
+.circles:hover text {
+  transition: 0.3s;
+  fill: white;
 }
 
 .klass-text {

@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between header align-items-center">
     <div class="trajectories__link-back" @click="$router.go(-1)">
       <img alt="back" src="/backChevrone.svg"/>
-      <span>{{ headerData.goBackText }}</span>
+      <span>{{ headerText }}</span>
     </div>
     <img src="/logo.svg" alt="logo"/>
   </div>
@@ -10,14 +10,13 @@
 
 <script>
 export default {
-  name: "TheHeaderRight.vue",
+  name: "TheHeader",
 
-  props: {
-    headerData: {
-      type: Object,
-      required: true
+  computed: {
+    headerText() {
+      return this.$store.getters['modules/header/headerText']
     }
-  },
+  }
 }
 </script>
 
