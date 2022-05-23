@@ -31,7 +31,7 @@
               <circle :r="klass.r" fill="#F3F3F4"></circle>
               <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}</text>
               <text dy="12px">{{
-                  klass.data.name.length > 20 ? klass.data.name.substring(0, 15) : klass.data.name
+                  klass.data.name.length > klass.r / 3.2 ? klass.data.name.substring(0, klass.r / 4) + '...' : klass.data.name
                 }}
               </text>
             </g>
