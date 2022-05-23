@@ -37,7 +37,7 @@ body {
 :root {
   --text-secondary: #B7B6BC;
   --main-color: #1F1F22;
-  --color-secondary: #F3F3FE;
+  --color-secondary: #EEEEFF;
   --color-1: #7CCBF8;
   --color-2: #F9CF6B;
   --color-3-dark: #37CE86;
@@ -71,4 +71,43 @@ body {
   font-weight: 400;
   font-size: 12px;
   cursor: pointer;
+}
+
+.main-button {
+  transition: 0.3s;
+  align-self: center;
+  background: var(--color-5-dark);
+  color: white;
+  font-weight: 500;
+  border: 0;
+  border-radius: 8px;
+}
+
+.main-button:hover {
+  background: #AE78FE;
+  color: white;
+}
+
+.main-button:active {
+  background: #7328E2;
+  color: white;
+}
+
+.secondary-button {
+  color: var(--color-5-dark);
+  border-radius: 8px;
+  background: white;
+  border: 1px solid var(--color-5-dark);
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.secondary-button:hover {
+  background: #F3F3FE;
+  color: #AE78FE;
+}
+
+.secondary-button:active {
+  background: #F3F3FE;
+  color: #7328E2;
 }

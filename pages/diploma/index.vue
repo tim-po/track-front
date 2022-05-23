@@ -16,47 +16,64 @@
     </b-row>
     <hr class="header-divider">
     <b-row class="mt-3">
-      <b-col cols="7">
-        <b-card class="diploma-card-left">
-          <h6 class="mb-3">Сдам</h6>
-          <b-row class="no-gutters">
-            <b-card class="control-type-card mr-2">
-              <h4>{{ controlTypes.controls ? controlTypes.controls['Экзамен'] : 0 }}</h4>
-              <h6>Экзамен</h6>
-            </b-card>
-            <b-card class="control-type-card mr-2">
-              <h4>{{ controlTypes.controls ? controlTypes.controls['Зачет'] : 0 }}</h4>
-              <h6>Зачет</h6>
-            </b-card>
-            <b-card class="control-type-card mr-2">
-              <h4>{{ controlTypes.controls ? controlTypes.controls['Курсовой проект'] : 0 }}</h4>
-              <h6>Курсовая работа</h6>
-            </b-card>
-            <b-card class="control-type-card">
-              <h4>{{ controlTypes.controls ? controlTypes.controls['Дифференцированный зачет'] : 0 }}</h4>
-              <h6>Диф. зачет</h6>
-            </b-card>
-          </b-row>
+      <b-col cols="4">
+        <b-card class="diploma-card">
+          <h6 class="mb-2">Высшее образование</h6>
+          <div class="small mb-1">Университет ИТМО, г. Санкт-Петербург</div>
+          <div class="small">Бакалавриат</div>
         </b-card>
-        <b-card class="diploma-card-left mt-4">
+        <b-card class="diploma-card mt-4">
+          <h6 class="mb-2">Освою ключевые навыки</h6>
+          <div class="mt-3">
+            <Keyword :deletable="false" :keyword="{ text: 'HTML' }" bg-color="'var(--color-secondary)'"/>
+          </div>
+        </b-card>
+        <b-card class="diploma-card mt-4">
+          <h6 class="mb-2">
+            Это твоя траектория в университете ИТМО!
+            <br>
+            Поступай к нам чтобы изучать то, что нравится.
+          </h6>
+          <div class="d-flex my-3">
+            <button class="main-button main-button-diploma mr-2">Поступай в ИТМО</button>
+            <button class="secondary-button secondary-button-diploma">Поделиться</button>
+          </div>
+        </b-card>
+      </b-col>
+      <b-col cols="8">
+        <b-card class="diploma-card">
           <h6 class="mb-2">Изучу 52 дисциплины</h6>
           <b-card class="control-type-card">
             <h4>24</h4>
             <h6>Экзамен</h6>
           </b-card>
         </b-card>
-      </b-col>
-      <b-col cols="4">
-        <b-card></b-card>
+        <b-card class="diploma-card mt-4">
+          <h6 class="mb-2">Сдам</h6>
+          <b-card class="control-type-card">
+            <h4>24</h4>
+            <h6>Экзамен</h6>
+          </b-card>
+        </b-card>
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
+import Keyword from "@/components/Keyword";
+
 export default {
-  layout: 'gray',
+  layout: 'grayLogoRight',
   name: "DiplomaPage",
+
+  components: {
+    Keyword
+  },
+
+  headerData: {
+    goBackText: 'К траектории'
+  },
 
   created() {
     if (Object.keys(this.trajectory).length === 0) {
@@ -81,6 +98,11 @@ export default {
 </script>
 
 <style scoped>
+.diploma-page {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
 .course-button-diploma {
   border: 0;
   font-weight: 500;
@@ -88,12 +110,12 @@ export default {
   padding: 10px 12px;
   border-radius: 8px 8px 0px 0px;
   color: var(--color-5-dark);
-  background-color: #EEE2FF;
+  background-color: white;
 }
 
-.diploma-card-left {
-  padding: 16px 24px 32px;
+.diploma-card {
   border-radius: 16px;
+  padding: 0 4px 4px 4px;
   border: 0;
 }
 
@@ -119,5 +141,15 @@ export default {
   background: white;
   height: 2px;
   border: 0;
+}
+
+.main-button-diploma {
+  font-size: 14px;
+  padding: 10px 12px;
+}
+
+.secondary-button-diploma {
+  font-size: 14px;
+  padding: 10px 12px;
 }
 </style>

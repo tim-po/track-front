@@ -11,7 +11,9 @@
           @click="currentCourse = number">
           {{ number }} Курс
         </button>
-        <button class="course-button-diploma mr-2 ml-3">Диплом</button>
+        <Nuxt-link to="/diploma">
+          <button class="course-button-diploma mr-2 ml-3">Диплом</button>
+        </Nuxt-link>
       </div>
     </b-row>
     <hr class="header-divider">
@@ -29,7 +31,7 @@
                   }"
             >
               <circle :r="klass.r" fill="#F3F3F4"></circle>
-              <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}</text>
+              <text dy="-2px" font-size="24px" font-weight="700">{{ klass.data.amount }}%</text>
               <text dy="12px">{{
                   klass.data.name.length > 20 ? klass.data.name.substring(0, 17) : klass.data.name
                 }}
@@ -62,7 +64,7 @@
             </p>
           </b-col>
         </b-row>
-        <div class="class-card" v-for="sphere in course.classes" :key="el" :style="'background:' + colors[sphere.name]">
+        <div class="class-card" v-for="sphere in course.classes" :key="sphere.name" :style="'background:' + colors[sphere.name]">
           <p class="class-header">
             {{ sphere.name }}
           </p>
@@ -70,18 +72,18 @@
             <b-col v-for="index in ['first_semesters_disciplines', 'second_semesters_disciplines']" :key="index">
               <div v-b-modal:modal-discipline class="modal-card-button"
                    v-for="discipline in sphere[index]" :key="discipline.id">
-                <div @click="getModal(discipline.id)" class="discipline-card" v-if="discipline.class.name === el">
+                <div @click="getModal(discipline.id)" class="discipline-card">
                   <b-row no-gutters class="justify-content-between">
                     <div
-                      :class="{'discipline-card-type': discipline.necessity, 'discipline-card-type-optional': !discipline.necessity}">
-                      {{ discipline.necessity ? 'Обязательно' : 'Выборная' }}
+                      :class="{'discipline-card-type': discipline.necessity === 'necessary', 'discipline-card-type-optional': discipline.necessity === 'chosen'}">
+                      {{ discipline.necessity === 'necessary' ? 'Обязательно' : 'Выборная' }}
                     </div>
                     <div class="discipline-card-control">
                       {{ discipline.control === 'Дифференцированный зачет' ? 'Диф. зачет' : discipline.control }}
                     </div>
                   </b-row>
                   <div
-                    :class="{'discipline-card-name': discipline.necessity, 'discipline-card-name-optional': !discipline.necessity}">
+                    :class="{'discipline-card-name': discipline.necessity === 'necessary', 'discipline-card-name-optional': discipline.necessity === 'chosen' }">
                     {{ discipline.name }}
                   </div>
                 </div>

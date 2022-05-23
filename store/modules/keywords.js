@@ -39,7 +39,6 @@ mutations = {
   },
 
   deleteKeyword: (state, payload) => {
-    console.log(payload)
     state.keywords = state.keywords.filter(word => word !== payload)
   },
 
@@ -49,6 +48,11 @@ mutations = {
 
   deleteQueryKeyword: (state, payload) => {
     state.queryKeywords = state.queryKeywords.filter(word => word !== payload)
+  },
+
+  clearKeywords: (state) => {
+    state.addedKeywords = []
+    state.queryKeywords = []
   }
 }
 
@@ -69,7 +73,7 @@ actions = {
 
   debounceKeywords: debounce(({dispatch}, query) => {
     dispatch("getKeywords", query);
-  }, 300),
+  }, 500),
 
 
   async sendKeywords({state, commit}) {

@@ -14,9 +14,15 @@
                  alt="Profession Image">
           </div>
           <h5 class="mb-4 mt-5 font-weight-bold">Надо изучить</h5>
+          <div class="keywords__warning mb-2" v-if="keywords ? keywords.length <= requiredWordsLimit : false">
+            <div class="d-flex">
+              <img src="/warning.svg" alt="" class="mr-2">
+              Ты можешь удалить не более 30% набора ключевых слов своей профессии
+            </div>
+          </div>
           <b-row class="keywords__required" no-gutters>
             <Keyword v-for="keyword in keywords" :key="keyword.text"
-                     :deletable="isEditing" :keyword="keyword" bg-color="'var(--color-secondary)'"
+                     :deletable="isEditing && keywords.length > requiredWordsLimit" :keyword="keyword" bg-color="'var(--color-secondary)'"
                      @deleteSelf="deleteKeyword(keyword)"/>
           </b-row>
         </div>
@@ -104,13 +110,14 @@ export default {
       searchQuery: '',
       isEditing: false,
       isSearching: false,
+      requiredWordsLimit: 0
     }
   },
 
   async created() {
     await this.$store.dispatch('modules/professions/getProfession', {id: +this.$route.query.id})
     this.$store.commit('modules/keywords/setKeywords', this.profession.related_keywords)
-
+    this.calculateRequiredLimit()
   },
 
   computed: {
@@ -140,6 +147,17 @@ export default {
   },
 
   methods: {
+    async clearChoice() {
+      await this.$store.dispatch('modules/professions/getProfession', {id: +this.$route.query.id})
+      this.$store.commit('modules/keywords/setKeywords', this.profession.related_keywords)
+      this.$store.commit('modules/keywords/clearKeywords', [])
+      this.keywordsToAdd = []
+    },
+
+    calculateRequiredLimit() {
+      this.requiredWordsLimit = Math.ceil(this.keywords.length * 0.8)
+    },
+
     searching() {
       this.isSearching = true
     },
@@ -154,6 +172,9 @@ export default {
 
     startEditing(){
       this.isEditing = true
+      if (this.isEditing === true) {
+        this.clearChoice()
+      }
     },
 
     deleteAddedKeyword(keyword) {
@@ -198,6 +219,10 @@ export default {
 </script>
 
 <style>
+.keywords {
+  height: calc(100vh - 180px);
+}
+
 .profession-name{
   font-weight: bold;
   font-size: 20px;
@@ -226,7 +251,7 @@ export default {
 .keywords-customisation-flex{
   position: relative;
   width: 100%;
-  max-height: calc(100vh - 85px);
+  height: 100%;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -419,7 +444,7 @@ export default {
 .add-keywords-search.extended {
   padding: 16px;
   min-height: 100px;
-  max-height: 600px;
+  max-height: calc(100vh - 300px);
   box-shadow: 0px 26px 11px rgba(100, 53, 165, 0.01), 0px 15px 9px rgba(100, 53, 165, 0.03), 0px 7px 7px rgba(100, 53, 165, 0.05), 0px 0px 4px rgba(100, 53, 165, 0.06), 0px 0px 0px rgba(100, 53, 165, 0.06);
   border: 1px solid #E7E8EE;
 }
@@ -462,5 +487,11 @@ export default {
 .editor-inner-container{
   position: relative;
   min-width: 400px;
+}
+
+.keywords__warning {
+  background: var(--gray-100);
+  border-radius: 12px;
+  padding: 1rem;
 }
 </style>
