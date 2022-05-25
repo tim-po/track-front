@@ -1,34 +1,39 @@
 <template>
-   <span
-     class="keywords__modal-keywords mr-1 mb-2"
-     :class="deleted ? 'deleted': ''"
-     :key="keyword.text"
-     :style="{background: bgColor}"
-   >
-     {{ keyword.text }}
-     <button class="bg-transparent border-0 pr-0 py-0" v-if="deletable" @click="deleteSelf">x</button>
-   </span>
+  <span
+    class="keywords__modal-keywords"
+    :class="deleted ? 'deleted' : ''"
+    :key="keyword.text"
+    :style="{ background: bgColor }"
+  >
+    {{ keyword.text }}
+    <button
+      class="border-0 pr-0 py-0 del-btn"
+      v-if="deletable"
+      @click="deleteSelf"
+    >
+      <!-- x -->
+    </button>
+  </span>
 </template>
 
 <script>
 export default {
   name: "Keyword",
 
-  props: ['deletable', 'keyword', 'deleted', 'bgColor'],
+  props: ["deletable", "keyword", "deleted", "bgColor"],
 
   methods: {
-    deleteSelf(){
-      this.deleted = true
-      setTimeout(()=>{
-        this.$emit('deleteSelf', this.keyword)
-      }, 300)
-    }
-  }
-}
+    deleteSelf() {
+      this.deleted = true;
+      setTimeout(() => {
+        this.$emit("deleteSelf", this.keyword);
+      }, 300);
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 .keywords__modal-keywords {
   transition: all 0.3s;
   border-radius: 8px;
@@ -47,4 +52,10 @@ export default {
   opacity: 0;
 }
 
+.del-btn {
+  width: 8.5px;
+  height: 8.5px;
+  background: url("../static/deleteBtn.svg") center;
+  margin-left: 8.81px;
+}
 </style>

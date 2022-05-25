@@ -1,93 +1,127 @@
 <template>
-    <div class="keywords">
-      <div class="keywords-customisation-flex">
-        <div class="profession-container" :class="isEditing ? 'editing': ''">
-          <h5 class="mb-3 font-weight-bold">Твоя профессия</h5>
-          <div class="keywords__card" :class="isEditing ? 'editing': ''">
-            <div class="profession-data" :class="isEditing ? 'editing': ''">
-              <h5 class="profession-name">{{ profession ? profession.name : '' }}</h5>
-              <p class="mb-0">
-                {{ profession ? profession.description : '' }}
-              </p>
-            </div>
-            <img class="profession-image" :class="isEditing ? 'editing': ''" :src="profession ? profession.icon: ''"
-                 alt="Profession Image">
+  <div class="keywords">
+    <div class="keywords-customisation-flex">
+      <div class="profession-container" :class="isEditing ? 'editing' : ''">
+        <h5 class="mb-3 font-weight-bold">Твоя профессия</h5>
+        <div class="keywords__card" :class="isEditing ? 'editing' : ''">
+          <div class="profession-data" :class="isEditing ? 'editing' : ''">
+            <h5 class="profession-name">
+              {{ profession ? profession.name : "" }}
+            </h5>
+            <p class="mb-0">
+              {{ profession ? profession.description : "" }}
+            </p>
           </div>
-          <h5 class="mb-4 mt-5 font-weight-bold">Надо изучить</h5>
-          <div class="keywords__warning mb-2" v-if="keywords ? keywords.length <= requiredWordsLimit : false">
-            <div class="d-flex">
-              <img src="/warning.svg" alt="" class="mr-2">
-              Ты можешь удалить не более 30% набора ключевых слов своей профессии
+          <img
+            class="profession-image"
+            :class="isEditing ? 'editing' : ''"
+            :src="profession ? profession.icon : ''"
+            alt="Profession Image"
+          />
+        </div>
+        <h5 class="mb-4 mt-5 font-weight-bold">Надо изучить</h5>
+        <div
+          class="keywords__warning mb-2"
+          v-if="keywords ? keywords.length <= requiredWordsLimit : false"
+        >
+          <div class="d-flex">
+            <img src="/warning.svg" alt="" class="mr-2" />
+            Ты можешь удалить не более 30% набора ключевых слов своей профессии
+          </div>
+        </div>
+        <b-row class="keywords__required" no-gutters>
+          <Keyword
+            v-for="keyword in keywords"
+            :key="keyword.text"
+            :deletable="isEditing && keywords.length > requiredWordsLimit"
+            :keyword="keyword"
+            bg-color="'var(--color-secondary)'"
+            @deleteSelf="deleteKeyword(keyword)"
+          />
+        </b-row>
+      </div>
+      <div class="editor" :class="isEditing ? 'extended' : ''">
+        <div class="editor-inner-container">
+          <h4 class="mb-3 font-weight-bold">Добавь то что хочешь изучить</h4>
+          <b-input
+            class="keywords-input shadow-none"
+            placeholder="Введи ключевое слово"
+            v-model="searchQuery"
+            @focus="searching()"
+            @keyup="searchKeywords(searchQuery)"
+          >
+          </b-input>
+          <div
+            class="add-keywords-search"
+            :class="searchQuery !== '' ? 'extended' : ''"
+          >
+            <b-row class="keywords-modal_add-keywords" no-gutters>
+              <span
+                class="keywords__modal-keywords keywords__modal-keywords_selected"
+                v-for="keyword in keywordsToAdd"
+                :key="keyword.text"
+                @click="selectKeyword(keyword)"
+                v-if="!keywordInArray(keyword, queryKeywords)"
+              >
+                {{ keyword.text }}
+              </span>
+              <span
+                class="keywords__modal-keywords"
+                v-for="keyword in queryKeywords"
+                :key="keyword.text"
+                @click="selectKeyword(keyword)"
+                :class="{
+                  'keywords__modal-keywords_selected': keywordInArray(
+                    keyword,
+                    keywordsToAdd
+                  ),
+                }"
+                v-show="!keywordInArray(keyword, addedKeywords)"
+              >
+                {{ keyword.text }}
+              </span>
+            </b-row>
+            <button @click="addKeywords" class="button-secondary in-modal">
+              Добавить
+            </button>
+          </div>
+          <div class="keywords__subtext">
+            Например: язык программирования C#
+          </div>
+
+          <div
+            v-if="addedKeywords ? addedKeywords.length === 0 : true"
+            class="text-center mt-4"
+          >
+            <img src="/lupa.svg" alt="" />
+            <div class="mt-3">
+              Ищи и добавляй навыки, которые хочешь получить в ИТМО
             </div>
           </div>
-          <b-row class="keywords__required" no-gutters>
-            <Keyword v-for="keyword in keywords" :key="keyword.text"
-                     :deletable="isEditing && keywords.length > requiredWordsLimit" :keyword="keyword" bg-color="'var(--color-secondary)'"
-                     @deleteSelf="deleteKeyword(keyword)"/>
+
+          <b-row class="keywords__added" no-gutters>
+            <Keyword
+              v-for="keyword in addedKeywords"
+              :key="keyword"
+              :deletable="true"
+              :keyword="keyword"
+              :bg-color="'var(--color-secondary)'"
+              @deleteSelf="deleteAddedKeyword(keyword)"
+            />
           </b-row>
         </div>
-        <div class="editor" :class="isEditing ? 'extended': ''">
-          <div class="editor-inner-container">
-            <h4 class="mb-3 font-weight-bold">Добавь то что хочешь изучить</h4>
-            <b-input
-              class="keywords-input shadow-none"
-              placeholder="Введи ключевое слово"
-              v-model="searchQuery"
-              @focus="searching()"
-              @keyup="searchKeywords(searchQuery)">
-            </b-input>
-            <div class="add-keywords-search" :class="searchQuery !== '' ? 'extended': ''">
-              <b-row class="keywords-modal_add-keywords" no-gutters>
-                <span
-                  class="keywords__modal-keywords keywords__modal-keywords_selected"
-                  v-for="keyword in keywordsToAdd"
-                  :key="keyword.text"
-                  @click="selectKeyword(keyword)"
-                  v-if="!keywordInArray(keyword, queryKeywords)"
-                >
-                  {{ keyword.text }}
-                </span>
-                <span
-                  class="keywords__modal-keywords "
-                  v-for="keyword in queryKeywords"
-                  :key="keyword.text"
-                  @click="selectKeyword(keyword)"
-                  :class="{'keywords__modal-keywords_selected': keywordInArray(keyword, keywordsToAdd)}"
-                  v-show="!keywordInArray(keyword, addedKeywords)"
-                >
-                  {{ keyword.text }}
-                </span>
-              </b-row>
-              <button @click="addKeywords" class="button-secondary in-modal">
-                Добавить
-              </button>
-            </div>
-            <div class="keywords__subtext">Например: язык программирования C#</div>
-
-            <div v-if="addedKeywords ? addedKeywords.length === 0 : true" class="text-center mt-4">
-              <img src="/lupa.svg" alt="" />
-              <div class="mt-3">Ищи и добавляй навыки, которые хочешь получить в ИТМО</div>
-            </div>
-
-            <b-row class="keywords__added" no-gutters>
-              <Keyword v-for="keyword in addedKeywords" :key="keyword" :deletable="true" :keyword="keyword"
-                       :bg-color="'var(--color-secondary)'" @deleteSelf="deleteAddedKeyword(keyword)"/>
-            </b-row>
-          </div>
-        </div>
-      </div>
-
-      <div class="bottom-buttons" :class="isEditing ? 'editing': ''">
-        <button class="button-secondary" @click="startEditing">
-          {{
-            isEditing ?
-              'Очистить выбор' :
-              'Изменить ключевые слова'
-          }}
-        </button>
-        <button class="button-primary" @click="sendKeywords">Мне все нравится</button>
       </div>
     </div>
+
+    <div class="bottom-buttons" :class="isEditing ? 'editing' : ''">
+      <button class="button-secondary" @click="startEditing">
+        {{ isEditing ? "Очистить выбор" : "Изменить ключевые слова" }}
+      </button>
+      <button class="button-primary" @click="sendKeywords">
+        Мне все нравится
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -97,122 +131,137 @@ export default {
   name: "KeywordsPage",
 
   components: {
-    Keyword
+    Keyword,
   },
 
   data() {
     return {
       keywordsToAdd: [],
-      searchQuery: '',
+      searchQuery: "",
       isEditing: false,
       isSearching: false,
-      requiredWordsLimit: 0
-    }
+      requiredWordsLimit: 0,
+    };
   },
 
   async created() {
-    this.$store.commit('modules/header/setHeaderText', 'Все профессии')
-    await this.$store.dispatch('modules/professions/getProfession', {id: +this.$route.query.id})
-    this.$store.commit('modules/keywords/setKeywords', this.profession.related_keywords)
-    this.calculateRequiredLimit()
+    this.$store.commit("modules/header/setHeaderText", "Все профессии");
+    await this.$store.dispatch("modules/professions/getProfession", {
+      id: +this.$route.query.id,
+    });
+    this.$store.commit(
+      "modules/keywords/setKeywords",
+      this.profession.related_keywords
+    );
+    this.calculateRequiredLimit();
   },
 
   computed: {
     keywords() {
-      return this.$store.getters['modules/keywords/keywords']
+      return this.$store.getters["modules/keywords/keywords"];
     },
 
     queryKeywords() {
-      return this.$store.getters['modules/keywords/queryKeywords']
+      return this.$store.getters["modules/keywords/queryKeywords"];
     },
 
     addedKeywords() {
-      return this.$store.getters['modules/keywords/addedKeywords']
+      return this.$store.getters["modules/keywords/addedKeywords"];
     },
 
     trajectoryIds() {
-      return this.$store.getters['modules/keywords/trajectoryIds']
+      return this.$store.getters["modules/keywords/trajectoryIds"];
     },
 
     color() {
-      return this.$store.getters['modules/professions/color'](this.profession.category)
+      return this.$store.getters["modules/professions/color"](
+        this.profession.category
+      );
     },
 
     profession() {
-      return this.$store.getters['modules/professions/selectedProfession']
+      return this.$store.getters["modules/professions/selectedProfession"];
     },
   },
 
   methods: {
     async clearChoice() {
-      await this.$store.dispatch('modules/professions/getProfession', {id: +this.$route.query.id})
-      this.$store.commit('modules/keywords/setKeywords', this.profession.related_keywords)
-      this.$store.commit('modules/keywords/clearKeywords', [])
-      this.keywordsToAdd = []
+      await this.$store.dispatch("modules/professions/getProfession", {
+        id: +this.$route.query.id,
+      });
+      this.$store.commit(
+        "modules/keywords/setKeywords",
+        this.profession.related_keywords
+      );
+      this.$store.commit("modules/keywords/clearKeywords", []);
+      this.keywordsToAdd = [];
     },
 
     calculateRequiredLimit() {
-      this.requiredWordsLimit = Math.ceil(this.keywords.length * 0.8)
+      this.requiredWordsLimit = Math.ceil(this.keywords.length * 0.8);
     },
 
     searching() {
-      this.isSearching = true
+      this.isSearching = true;
     },
 
     notSearching() {
-      this.isSearching = false
+      this.isSearching = false;
     },
 
     deleteKeyword(keyword) {
-      this.$store.commit('modules/keywords/deleteKeyword', keyword)
+      this.$store.commit("modules/keywords/deleteKeyword", keyword);
     },
 
-    startEditing(){
-      this.isEditing = true
+    startEditing() {
+      this.isEditing = true;
       if (this.isEditing === true) {
-        this.clearChoice()
+        this.clearChoice();
       }
     },
 
     deleteAddedKeyword(keyword) {
-      this.$store.commit('modules/keywords/deleteAddedKeyword', keyword)
+      this.$store.commit("modules/keywords/deleteAddedKeyword", keyword);
     },
 
     searchKeywords(query) {
-      this.$store.dispatch('modules/keywords/debounceKeywords', query)
+      this.$store.dispatch("modules/keywords/debounceKeywords", query);
     },
 
     addKeywords() {
-      this.$store.commit('modules/keywords/addKeywords', this.keywordsToAdd)
-      this.keywordsToAdd = []
-      this.notSearching()
-      this.searchQuery = ''
+      this.$store.commit("modules/keywords/addKeywords", this.keywordsToAdd);
+      this.keywordsToAdd = [];
+      this.notSearching();
+      this.searchQuery = "";
     },
 
     selectKeyword(keyword) {
       if (this.keywordsToAdd.includes(keyword)) {
-        this.keywordsToAdd.splice(this.keywordsToAdd.indexOf(keyword), 1)
+        this.keywordsToAdd.splice(this.keywordsToAdd.indexOf(keyword), 1);
       } else {
-        this.keywordsToAdd.push(keyword)
+        this.keywordsToAdd.push(keyword);
       }
     },
 
     async sendKeywords() {
-      await this.$store.dispatch('modules/keywords/sendKeywords')
-      this.$router.push({path: '/trajectories', query: {ids: JSON.stringify(this.trajectoryIds) }})
+      await this.$store.dispatch("modules/keywords/sendKeywords");
+      this.$router.push({
+        path: "/trajectories",
+        query: { ids: JSON.stringify(this.trajectoryIds) },
+      });
     },
 
-    keywordInArray (keyword, array) {
+    keywordInArray(keyword, array) {
       for (let i = 0; i < array.length; i++) {
         if (array[i].text === keyword.text) {
-          return true
+          return true;
         }
       }
 
-      return false
-    }
-  }
-}
+      return false;
+    },
+  },
+};
 </script>
 
 <style>
@@ -220,32 +269,32 @@ export default {
   height: calc(100vh - 180px);
 }
 
-.profession-name{
+.profession-name {
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 24px;
 }
 
-.profession-data{
+.profession-data {
   margin-right: 60px;
 }
 
-.profession-data.editing{
+.profession-data.editing {
   transition: all 0.5s;
   margin-right: 0;
 }
 
-.profession-image{
+.profession-image {
   height: 200px;
   max-width: 200px;
 }
 
-.profession-image.editing{
+.profession-image.editing {
   max-width: 0;
   height: 0;
 }
 
-.keywords-customisation-flex{
+.keywords-customisation-flex {
   position: relative;
   width: 100%;
   height: 100%;
@@ -255,12 +304,12 @@ export default {
 }
 
 .keywords-input:focus {
-  border: 1px solid rgba(210, 210, 212, 0.8)
+  border: 1px solid rgba(210, 210, 212, 0.8);
 }
 
 .keywords-input {
   border-radius: 8px;
-  border: 1px solid rgba(210, 210, 212, 0.8)
+  border: 1px solid rgba(210, 210, 212, 0.8);
 }
 
 .keywords__modal-keywords {
@@ -271,9 +320,12 @@ export default {
   margin-bottom: 8px;
   font-weight: 500;
   font-size: 12px;
+  cursor: default;
 }
-
-.keywords__modal-keywords:last-child{
+.add-keywords-search .keywords__modal-keywords {
+  cursor: pointer;
+}
+.keywords__modal-keywords:last-child {
   margin-right: 130px;
 }
 
@@ -283,7 +335,7 @@ export default {
 }
 
 .keywords__subtext {
-  color: #6E6D7980;
+  color: #6e6d7980;
   font-size: 12px;
   margin-top: 6px;
 }
@@ -306,8 +358,8 @@ export default {
 }
 
 .keywords__added {
-  max-height: 600px;
-  overflow-Y: auto;
+  max-height: calc(100vh - 310px);
+  overflow-y: auto;
   margin-top: 24px;
 }
 
@@ -322,7 +374,7 @@ export default {
 .keywords__card {
   border-radius: 16px;
   padding: 40px;
-  border: 1px solid #E7E8EE;
+  border: 1px solid #e7e8ee;
   width: 100%;
 
   display: flex;
@@ -336,9 +388,9 @@ export default {
 }
 
 .keywords__more-button {
-  color: #6E6D79;
+  color: #6e6d79;
   font-size: 0.75rem;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .keywords__accept {
@@ -347,7 +399,7 @@ export default {
 }
 
 .keywords__info {
-  border: 1px solid #D2D2D4;
+  border: 1px solid #d2d2d4;
   border-radius: 16px;
 }
 
@@ -362,7 +414,7 @@ export default {
 .bottom-buttons {
   position: absolute;
   bottom: 3rem;
-  right: calc((100% - 900px)/2);
+  right: calc((100% - 900px) / 2);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -370,7 +422,7 @@ export default {
   margin-top: 22px;
 }
 
-.bottom-buttons.editing{
+.bottom-buttons.editing {
   transition: all 0.5s;
   display: flex;
   width: 100%;
@@ -403,7 +455,7 @@ export default {
   padding: 8px 12px;
 }
 
-.button-secondary.in-modal{
+.button-secondary.in-modal {
   position: absolute;
   bottom: 24px;
   right: 16px;
@@ -416,10 +468,22 @@ export default {
 
 .keywords-modal_add-keywords {
   max-height: 100%;
-  overflow-Y: auto;
+  overflow-y: auto;
+}
+.keywords-modal_add-keywords::-webkit-scrollbar,
+.keywords__added::-webkit-scrollbar,
+.keywords__required::-webkit-scrollbar {
+  width: 6px;
+  background: rgba(243, 243, 248, 0.5);
+}
+.keywords-modal_add-keywords::-webkit-scrollbar-thumb,
+.keywords__added::-webkit-scrollbar-thumb,
+.keywords__required::-webkit-scrollbar-thumb {
+  background: #e7e8ee;
+  border-radius: 6px;
 }
 
-.add-keywords-search{
+.add-keywords-search {
   transition: all 0.5s, border 0.2s;
   display: flex;
   flex-direction: column;
@@ -428,7 +492,9 @@ export default {
   overflow: hidden;
   margin-top: 8px;
   border-radius: 16px;
-  box-shadow: 0px 26px 11px rgba(100, 53, 165, 0.0), 0px 15px 9px rgba(100, 53, 165, 0.0), 0px 7px 7px rgba(100, 53, 165, 0.0), 0px 0px 4px rgba(100, 53, 165, 0.0), 0px 0px 0px rgba(100, 53, 165, 0.0);
+  box-shadow: 0px 26px 11px rgba(100, 53, 165, 0),
+    0px 15px 9px rgba(100, 53, 165, 0), 0px 7px 7px rgba(100, 53, 165, 0),
+    0px 0px 4px rgba(100, 53, 165, 0), 0px 0px 0px rgba(100, 53, 165, 0);
   margin-bottom: 20px;
   border: 1px solid rgba(231, 232, 238, 0);
   background: white;
@@ -442,11 +508,13 @@ export default {
   padding: 16px;
   min-height: 100px;
   max-height: calc(100vh - 300px);
-  box-shadow: 0px 26px 11px rgba(100, 53, 165, 0.01), 0px 15px 9px rgba(100, 53, 165, 0.03), 0px 7px 7px rgba(100, 53, 165, 0.05), 0px 0px 4px rgba(100, 53, 165, 0.06), 0px 0px 0px rgba(100, 53, 165, 0.06);
-  border: 1px solid #E7E8EE;
+  box-shadow: 0px 26px 11px rgba(100, 53, 165, 0.01),
+    0px 15px 9px rgba(100, 53, 165, 0.03), 0px 7px 7px rgba(100, 53, 165, 0.05),
+    0px 0px 4px rgba(100, 53, 165, 0.06), 0px 0px 0px rgba(100, 53, 165, 0.06);
+  border: 1px solid #e7e8ee;
 }
 
-.profession-container{
+.profession-container {
   max-width: 900px;
   width: 100%;
   min-width: 400px;
@@ -465,7 +533,7 @@ export default {
   transition: 0.3s;
 }
 
-.editor{
+.editor {
   transition: all 0.5s;
   width: 0;
   overflow: hidden;
@@ -475,13 +543,13 @@ export default {
   flex-direction: column;
 }
 
-.editor.extended{
+.editor.extended {
   width: 100%;
   padding-right: 8px;
   padding-left: 8px;
 }
 
-.editor-inner-container{
+.editor-inner-container {
   position: relative;
   min-width: 400px;
 }
