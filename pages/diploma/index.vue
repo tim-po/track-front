@@ -28,7 +28,7 @@
           <div class="text-small mb-1">
             Университет ИТМО, г. Санкт-Петербург
           </div>
-          <div class="text-small">Бакалавриат</div>
+          <div class="text-small bachelor">Бакалавриат</div>
         </b-card>
         <b-card class="diploma-card mt-4">
           <h6 class="mb-2">Освою ключевые навыки</h6>
@@ -205,5 +205,18 @@ export default {
 
 .text-small {
   font-size: 12px;
+}
+
+.bachelor {
+  position: relative;
+  padding-left: 24px;
+}
+.bachelor::before {
+  position: absolute;
+  left: 0px;
+  top: 1px;
+  content: url("../../static/star.svg");
+  width: 16px;
+  height: 16px;
 }
 </style>

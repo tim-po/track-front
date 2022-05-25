@@ -486,7 +486,7 @@ text {
 .modal-col-header {
   position: absolute;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   color: #ffffff;
   top: 44px;
   left: 0;
@@ -495,7 +495,7 @@ text {
 
 .modal-col-header-deactive {
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   color: #ffffff;
   opacity: 0.3;
   top: 44px;
@@ -645,7 +645,7 @@ text {
   font-weight: 500;
   font-size: 12px;
   border-radius: 4px;
-  padding: 4px 6px;
+  padding: 6px 8px;
 }
 
 .discipline-detail-yellow {
