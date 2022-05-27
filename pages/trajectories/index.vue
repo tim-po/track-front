@@ -1,7 +1,10 @@
 <template>
   <div class="trajectory-choice-page-container pb-3">
     <div class="trajectories-info-card d-flex align-items-center mb-3">
-      <button class="bg-transparent border-0 pr-0 py-0 button-del"></button>
+      <button
+        class="bg-transparent border-0 pr-0 py-0 button-del"
+        @click="(e) => e.target.parentElement.classList.add('hidden')"
+      ></button>
       <PercentProgress percent="0.8" class="mr-2" />
       Мы собрали подходяшие для тебя образовательные программы. <br />
       Индикатор – процентное совпадение с твоими интересами.
@@ -115,7 +118,10 @@ export default {
         query: trajectory.id,
         mode: "set",
       });
-      this.$router.push({ path: "/trajectory", query: { id: trajectory.id } });
+      this.$router.push({
+        path: "/trajectory",
+        query: { id: trajectory.id, course: "1" },
+      });
     },
 
     // coverage (trajectory) {
@@ -267,5 +273,14 @@ export default {
   width: 8.5px;
   height: 8.5px;
   background: url(../../static/deleteBtn.svg) center;
+}
+
+.hidden {
+  height: 0;
+  font-size: 0;
+  padding: 0;
+}
+.hidden > * {
+  height: 0;
 }
 </style>
