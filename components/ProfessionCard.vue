@@ -77,6 +77,7 @@ export default {
   flex-wrap: wrap;
   margin-bottom: 8px;
   max-height: 72px;
+  min-height: 72px;
   overflow: hidden;
 }
 

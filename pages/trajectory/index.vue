@@ -200,9 +200,12 @@
       id="modal-discipline"
       content-class="discipline-modal"
       size="xl"
+      centered
       hide-footer
       hide-header
     >
+      <button type="button" class="close"  @click="$bvModal.hide('modal-discipline')">
+      </button>
       <div
         class="discipline-image row no-gutters"
         :style="'background:' + colors[discipline.class.name]"
@@ -292,17 +295,20 @@
             "
             v-for="keyword in discipline.keywords_aligned_with_user"
           >
-            {{ keyword.text }}
+            {{ keyword}}
           </div>
           <div v-for="keyword in discipline.keywords">
             <div
-              v-show="keyword.text !== ''"
+              :style="
+              'background:' + colors[discipline.class.name]+'20' + '!important'
+            "
+              v-show="keyword !== ''"
               v-if="
                 !keywordInArray(keyword, discipline.keywords_aligned_with_user)
               "
               class="mr-2 mb-2 modal-keyword"
             >
-              {{ keyword.text }}
+              {{ keyword }}
             </div>
           </div>
         </b-row>
@@ -317,7 +323,7 @@
             class="modal-keyword mr-2 mb-2"
             v-for="keyword in discipline.prerequisites"
           >
-            {{ keyword.text }}
+            {{ keyword}}
           </div>
         </b-row>
       </div>
@@ -507,7 +513,17 @@ text {
   border-left: 1px solid white;
   border-right: 1px solid white;
 }
-
+.close {
+  right: 18px;
+  top:18px;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: url("../../static/closeBtn.svg") center;
+  opacity: 1;
+  cursor: pointer;
+  z-index: 1600;
+}
 .modal-col-header {
   position: absolute;
   font-weight: 500;
@@ -522,7 +538,7 @@ text {
   font-weight: 500;
   font-size: 14px;
   color: #ffffff;
-  opacity: 0.3;
+  /*opacity: 0.3;*/
   top: 44px;
   left: 0;
   right: 0;

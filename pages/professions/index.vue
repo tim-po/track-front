@@ -1,7 +1,7 @@
 <template>
   <div class="professionsPageContainer">
     <div class="professionsContainer">
-      <div class="d-flex justify-content-between w-100 align-items-center">
+      <div class="d-flex justify-content-between card-header-width align-items-center">
         <h3 class="profession__title">Выбирай подходящее направление</h3>
         <button v-b-modal.modal1 class="profession__button mb-4">
           Не знаю, что мне подходит
@@ -118,7 +118,9 @@ export default {
   font-weight: 700;
   margin-bottom: 16px;
 }
-
+.card-header-width{
+  width: calc(100vw - 80px);
+}
 .modalText {
   margin-bottom: 24px;
 }
