@@ -4,11 +4,20 @@
       <h5 class="mb-0">{{ trajectory.educational_plan }}</h5>
       <div>
         <button
-          :class="{ 'course-button-active': number === currentCourse }"
+          :class="{
+            'course-button-active': number === +$route.query.course,
+          }"
           class="course-button ml-3"
           v-for="number in courses"
           :key="number"
-          @click="currentCourse = number"
+          @click="
+            currentCourse =
+              number &&
+              $router.push({
+                path: '/trajectory',
+                query: { id: trajectory.id, course: number },
+              })
+          "
         >
           {{ number }} Курс
         </button>
@@ -395,7 +404,7 @@ export default {
 
     course() {
       return this.$store.getters["modules/trajectory/course"](
-        this.currentCourse
+        +this.$route.query.course
       );
     },
 

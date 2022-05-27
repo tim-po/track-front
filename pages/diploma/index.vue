@@ -11,7 +11,7 @@
           @click="
             $router.push({
               path: '/trajectory',
-              query: { id: trajectory.id },
+              query: { id: trajectory.id, course: number },
             }) && (currentCourse = number)
           "
         >
