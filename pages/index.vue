@@ -10,7 +10,7 @@
             <Nuxt-link to="/professions">
               <button class="main-button mr-4">Поехали!</button>
             </Nuxt-link>
-            <button class="secondary-button">Подробнее</button>
+            <button @click="scrollToBottom" class="secondary-button">Подробнее</button>
           </div>
         </div>
         <div class="d-flex flex-column justify-content-center">
@@ -67,9 +67,16 @@
 
 <script>
 export default {
+  // TODO: implement scroll using https://github.com/rigor789/vue-scrollto
   name: "landingPage",
 
-  layout: 'gray'
+  layout: 'gray',
+
+  methods: {
+    scrollToBottom(){
+      window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+    }
+  }
 }
 </script>
 

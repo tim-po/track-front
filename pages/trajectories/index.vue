@@ -91,6 +91,8 @@ import ControlTypeTile from "@/components/ControlTypeTile";
 import PercentProgress from "@/components/PercentProgress";
 
 export default {
+  // TODO: убрать скролбар, добавить стрелку как в дизайне, по ней smooth scroll до конца следующей карточки
+  // TODO: карточка курса кликабельная по ней переход на курс
   layout: "grayLogoRight",
   name: "Trajectories",
 

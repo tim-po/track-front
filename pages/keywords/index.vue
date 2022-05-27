@@ -128,6 +128,7 @@
 import Keyword from "@/components/Keyword";
 
 export default {
+  // TODO: добавить экран загрузки
   name: "KeywordsPage",
 
   components: {

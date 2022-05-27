@@ -320,6 +320,8 @@ import { hierarchy, pack } from "d3-hierarchy";
 import ControlTypeTile from "@/components/ControlTypeTile";
 
 export default {
+  // TODO: модалка: центрировать, добавить крестик как в дизайне, сделать цвет тегов как в дизайне (20% прозрачность), сделать заголовки как в дизайне, добавить выпадашку как в дизайне, по id из поля replacement_options
+
   name: "TrajectoryPage",
 
   components: {
