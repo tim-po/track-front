@@ -31,6 +31,7 @@
           :class="'trajectories-bg-' + index"
           v-for="(course, index) in trajectory.courses"
           :key="index"
+          @click="trajectoryChosen(trajectory,index + 1 )"
         >
           <div class="course-card__header">{{ index + 1 }} курс</div>
           <div class="mt-2">Ты изучишь</div>
@@ -115,14 +116,14 @@ export default {
   },
 
   methods: {
-    trajectoryChosen(trajectory) {
+    trajectoryChosen(trajectory, course = "1") {
       this.$store.dispatch("modules/trajectory/setTrajectory", {
         query: trajectory.id,
         mode: "set",
       });
       this.$router.push({
         path: "/trajectory",
-        query: { id: trajectory.id, course: "1" },
+        query: { id: trajectory.id, course: course },
       });
     },
 
@@ -211,6 +212,7 @@ export default {
   color: white;
   min-width: 420px;
   border-radius: 16px;
+  cursor: pointer;
 }
 
 .trajectories-bg-0 {
