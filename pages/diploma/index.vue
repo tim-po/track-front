@@ -9,7 +9,7 @@
           v-for="number in courses"
           :key="number"
           @click="
-            $router.push({
+            $router.replace({
               path: '/trajectory',
               query: { id: trajectory.id, course: number },
             }) && (currentCourse = number)
@@ -111,7 +111,7 @@ export default {
   },
 
   created() {
-    this.$store.commit("modules/header/setHeaderText", "К траектории");
+    this.$store.commit("modules/header/setHeaderText", "Все траектории");
     this.$store.dispatch("modules/trajectory/getDiploma", {
       query: this.$route.query.id,
     });

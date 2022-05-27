@@ -2,18 +2,19 @@
   <div class="trajectory-page">
     <b-row no-gutters class="justify-content-between mb-0 align-items-center">
       <h5 class="mb-0">{{ trajectory.educational_plan }}</h5>
-      <div>
+      <div class="courses-row">
+        <CourseSelector bgColor="#F3F3F8" :leftOffset="selectorLeftOffset"/>
         <button
           :class="{
             'course-button-active': number === +$route.query.course,
           }"
-          class="course-button ml-3"
+          class="course-button"
           v-for="number in courses"
           :key="number"
           @click="
             currentCourse =
               number &&
-              $router.push({
+              $router.replace({
                 path: '/trajectory',
                 query: { id: trajectory.id, course: number },
               })
@@ -24,7 +25,7 @@
         <button
           class="course-button-diploma mr-2 ml-3"
           @click="
-            $router.push({ path: '/diploma', query: { id: trajectory.id } })
+            $router.replace({ path: '/diploma', query: { id: trajectory.id }})
           "
         >
           Диплом
@@ -327,6 +328,7 @@
 <script>
 import { hierarchy, pack } from "d3-hierarchy";
 import ControlTypeTile from "@/components/ControlTypeTile";
+import CourseSelector from "@/components/Trajectory/CourseSelector";
 
 export default {
   // TODO: модалка: центрировать, добавить крестик как в дизайне, сделать цвет тегов как в дизайне (20% прозрачность), сделать заголовки как в дизайне, добавить выпадашку как в дизайне, по id из поля replacement_options
@@ -335,6 +337,7 @@ export default {
 
   components: {
     ControlTypeTile,
+    CourseSelector,
   },
 
   data: () => {
@@ -348,6 +351,7 @@ export default {
   },
 
   created() {
+    this.currentCourse = +this.$route.query.course
     this.$store.commit("modules/header/setHeaderText", "Все траектории");
     if (Object.keys(this.trajectory).length === 0) {
       this.$store.dispatch("modules/trajectory/getTrajectory", {
@@ -360,6 +364,10 @@ export default {
   },
 
   computed: {
+    selectorLeftOffset() {
+      return 90 * (+this.$route.query.course-1)
+    },
+
     transformedClassData() {
       return {
         name: "Top Level",
@@ -440,6 +448,12 @@ export default {
 </script>
 
 <style>
+
+.courses-row {
+  position: relative;
+  /*width: 435px*/
+}
+
 .modal-card-button {
   outline: none !important;
 }
@@ -519,6 +533,8 @@ text {
   border: 0;
   font-weight: 400;
   font-size: 14px;
+  width: 90px;
+  height: 42px;
   padding: 10px 12px;
   border-radius: 8px 8px 0px 0px;
 }
@@ -534,7 +550,7 @@ text {
 }
 
 .course-button-active {
-  background: var(--gray-100);
+  /*background: var(--gray-100);*/
   font-weight: 500;
 }
 
