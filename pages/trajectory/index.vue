@@ -3,7 +3,7 @@
     <b-row no-gutters class="justify-content-between mb-0 align-items-center">
       <h5 class="mb-0">{{ trajectory.educational_plan }}</h5>
       <div class="courses-row">
-        <CourseSelector bgColor="#F3F3F8" :leftOffset="selectorLeftOffset"/>
+        <CourseSelector :bgColor="courseNumberFromQuery === 5 ? '#FFFFFF': '#F3F3F8'" :leftOffset="selectorLeftOffset"/>
         <button
           :class="{
             'course-button-active': number === +$route.query.course,
@@ -12,28 +12,28 @@
           v-for="number in courses"
           :key="number"
           @click="
-            currentCourse =
+            courseNumberFromQuery =
               number &&
               $router.replace({
                 path: '/trajectory',
                 query: { id: trajectory.id, course: number },
               })
+              &&
+              $store.commit('modules/header/setBgWhite');
           "
         >
           {{ number }} Курс
         </button>
         <button
-          class="course-button-diploma mr-2 ml-3"
-          @click="
-            $router.replace({ path: '/diploma', query: { id: trajectory.id }})
-          "
+          class="course-button-diploma"
+          @click="$router.replace({ path: '/trajectory', query: { id: trajectory.id, course: '5' }})"
         >
           Диплом
         </button>
       </div>
     </b-row>
-    <hr class="header-divider" />
-    <b-row v-if="course">
+    <hr class="header-divider" :style="courseNumberFromQuery === 5 ? {'background-color': '#FFFFFF'}: {'background-color': 'var(--gray-100)'}" />
+    <b-row v-if="course && courseNumberFromQuery !== 5">
       <b-col cols="4">
         <h6 class="mt-3">Статистика</h6>
         <div class="trajectory-card">
@@ -195,6 +195,8 @@
       </b-col>
     </b-row>
 
+    <Diploma v-if="courseNumberFromQuery === 5" />
+
     <b-modal
       v-if="discipline !== null"
       id="modal-discipline"
@@ -229,7 +231,7 @@
         <b-col
           class="discipline-modal-column justify-content-center d-flex flex-column"
         >
-          <p class="text-center modal-col-header">{{ currentCourse }} курс</p>
+          <p class="text-center modal-col-header">{{ courseNumberFromQuery }} курс</p>
           <div class="discipline-card-modal mx-auto">
             {{ discipline.name }}
           </div>
@@ -335,6 +337,7 @@
 import { hierarchy, pack } from "d3-hierarchy";
 import ControlTypeTile from "@/components/ControlTypeTile";
 import CourseSelector from "@/components/Trajectory/CourseSelector";
+import Diploma from "../../components/Trajectory/Diploma";
 
 export default {
   // TODO: модалка: центрировать, добавить крестик как в дизайне, сделать цвет тегов как в дизайне (20% прозрачность), сделать заголовки как в дизайне, добавить выпадашку как в дизайне, по id из поля replacement_options
@@ -344,6 +347,7 @@ export default {
   components: {
     ControlTypeTile,
     CourseSelector,
+    Diploma,
   },
 
   data: () => {
@@ -357,21 +361,26 @@ export default {
   },
 
   created() {
-    this.currentCourse = +this.$route.query.course
     this.$store.commit("modules/header/setHeaderText", "Все траектории");
-    if (Object.keys(this.trajectory).length === 0) {
-      this.$store.dispatch("modules/trajectory/getTrajectory", {
-        query: +this.$route.query.id,
-        mode: "set",
-      });
-    }
+    this.$store.dispatch("modules/trajectory/getTrajectory", {
+      query: +this.$route.query.id,
+      mode: "set",
+    });
 
     this.$store.dispatch("modules/trajectory/getDiscipline", 1);
+
+    this.$store.dispatch("modules/trajectory/getDiploma", {
+      query: this.$route.query.id,
+    });
   },
 
   computed: {
+    courseNumberFromQuery() {
+      return +this.$route.query.course
+    },
     selectorLeftOffset() {
-      return 90 * (+this.$route.query.course-1)
+      const courseNumber = +this.$route.query.course
+      return (90 * (+this.$route.query.course-1)) + (courseNumber === 5 ? 24: 0)
     },
 
     transformedClassData() {
@@ -457,6 +466,8 @@ export default {
 
 .courses-row {
   position: relative;
+  z-index: 2;
+
   /*width: 435px*/
 }
 
@@ -552,7 +563,6 @@ text {
   width: 90px;
   height: 42px;
   padding: 10px 12px;
-  border-radius: 8px 8px 0px 0px;
 }
 
 .course-button-diploma {
@@ -561,7 +571,9 @@ text {
   font-weight: 500;
   font-size: 14px;
   padding: 10px 12px;
-  border-radius: 8px 8px 0px 0px;
+  width: 90px;
+  height: 42px;
+  margin-left: 20px;
   color: var(--color-5-dark);
 }
 
@@ -571,9 +583,9 @@ text {
 }
 
 .header-divider {
+  transition: all 0.3s;
   padding: 0;
   margin: 0;
-  background: var(--gray-100);
   height: 2px;
   border: 0;
 }

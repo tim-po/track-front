@@ -17,7 +17,7 @@ export default {
 .course-selector{
   transition: all 0.3s;
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   z-index: -1;
 }
 
