@@ -3,7 +3,7 @@
     <div v-if="diploma !== null" class="left-tiles">
       <b-card class="diploma-card">
         <h6 class="tile-header">Высшее образование</h6>
-        <div class="text-small mb-1">
+        <div class="text-small mb-2">
           Университет ИТМО, г. Санкт-Петербург
         </div>
         <div class="text-small bachelor">Бакалавриат</div>
@@ -113,7 +113,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 20%;
-  max-width: 600px;
+  max-width: 514px;
   min-width: 300px;
   flex-grow: 3;
 
@@ -122,8 +122,8 @@ export default {
 .tiles-flex{
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-gap: 16px;
 }
 
 .tile-header{
@@ -140,7 +140,7 @@ export default {
   align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 30px;
   width: 100%;
 }
 
@@ -171,17 +171,17 @@ export default {
 
 .control-type-card {
   background: #78a3ec;
-  border-radius: 16px;
+  border-radius: 20px;
   color: white;
-  min-width: 160px;
+  min-width: 180px;
   height: 104px;
   padding: 20px;
 }
 
 .classes-type-card {
-  border-radius: 16px;
+  border-radius: 20px;
   color: white;
-  min-width: 196px;
+  min-width: 180px;
   height: 134px;
   padding: 20px;
   background: #78a3ec;

@@ -518,6 +518,7 @@ text {
 .trajectory-page {
   max-width: 1500px;
   margin: 0 auto;
+  margin-top: 24px;
 }
 
 .discipline-modal-column {
