@@ -38,6 +38,7 @@
         <h6 class="mt-3">Статистика</h6>
         <div
           class="trajectory-card"
+          :style="{'padding': 0}"
         >
           <div class="stats-circles">
             <div
@@ -56,6 +57,8 @@
                 'top': `${getTransitionOf(klass).y}px`,
                 'width': `${klass.r *2}px`,
                 'height': `${klass.r *2}px`,
+                'min-width': `${klass.r *2}px`,
+                'min-height': `${klass.r *2}px`,
               }"
               :class="(isFocusedOnCircleOf(klass)) ? 'focused': ''"
             >
@@ -63,11 +66,7 @@
                 {{ klass.data.amount }}
               </div>
               <div class="circle-text">
-                {{
-                  (klass.data.name.length < klass.r / 3.2 || (!focusedCircleLoading && isFocusedOnCircleOf(klass)))
-                    ? klass.data.name
-                    : `${klass.data.name.substring(0, klass.r / 4)}...`
-                }}
+                {{ getCircleTextOf(klass) }}
               </div>
             </div>
           </div>
@@ -455,11 +454,21 @@ export default {
   },
 
   methods: {
+    getCircleTextOf(klass){
+      if(
+        klass.data.name.length < klass.r / 3.2 ||
+        (!this.focusedCircleLoading && this.isFocusedOnCircleOf(klass)) ||
+        klass.r > this.focusedCircleRadius
+      ){
+        return klass.data.name
+      }
+      return `${klass.data.name.substring(0, klass.r / 4.2)}...`
+    },
     getTransitionOf(klass){
       let xTrans = klass.x - klass.r
       let yTrans = klass.y -  klass.r
 
-      if(this.focusedCircle === undefined){
+      if(this.focusedCircle === undefined || this.focusedCircle.r > this.focusedCircleRadius){
         return {x: xTrans, y: yTrans}
       }
 
@@ -467,10 +476,10 @@ export default {
       let focusCircleYtrans = this.focusedCircle.y - this.focusedCircleRadius
 
       if(this.focusedCircle.x - this.focusedCircleRadius < 0){
-        focusCircleXtrans = 0
+        focusCircleXtrans = 4
       }
       if(this.focusedCircle.y - this.focusedCircleRadius < 0){
-        focusCircleYtrans = 0
+        focusCircleYtrans = 4
       }
 
       if(this.focusedCircle.x + this.focusedCircleRadius > 400){
@@ -549,7 +558,7 @@ svg {
 
 .circle {
   position: absolute;
-  transition: all 0.3s ease-in-out, z-index 0s;
+  transition: all 0.25s ease-in-out, z-index 0.25s 0s;
   transform-origin: center;
   font-weight: 400;
   font-size: 10px;
@@ -577,10 +586,8 @@ svg {
 }
 
 .circle.focused {
+  transition: all 0.25s ease-in-out, z-index 0s;
   z-index: 2;
-  /*left: calc(50% - 150px) !important;*/
-  /*top: calc(50% - 150px) !important;*/
-  /*transform: translate(calc(50% - 150px), calc(50% - 150px)) !important;*/
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   width: 180px !important;
   height: 180px !important;
