@@ -36,34 +36,41 @@
     <b-row v-if="course && courseNumberFromQuery !== 5">
       <b-col cols="4">
         <h6 class="mt-3">Статистика</h6>
-        <div class="trajectory-card">
-          <svg width="400" height="400">
-            <g
-              class="circles"
+        <div
+          class="trajectory-card"
+        >
+          <div class="stats-circles">
+            <div
+              class="circle"
               v-for="klass in layoutData.children"
               :key="klass.data.name"
-              :style="{
-                transform: `translate(${klass.x}px, ${klass.y}px)`,
+              @mouseenter="(e) => {setFocusedCircle(klass)}"
+              @mouseleave="(e) => {
+                if(focusedCircle === klass){
+                   focusedCircle = undefined
+                }
               }"
-              @mouseenter="
-                (e) =>
-                  (e.target.firstChild.style.fill = colors[klass.data.name])
-              "
-              @mouseleave="(e) => (e.target.firstChild.style.fill = '#F3F3F4')"
+              :style="{
+                'background': `${isFocusedOnCircleOf(klass) ? colors[klass.data.name]: '#F3F3F4'}`,
+                'left': `${getTransitionOf(klass).x}px`,
+                'top': `${getTransitionOf(klass).y}px`,
+                'width': `${klass.r *2}px`,
+                'height': `${klass.r *2}px`,
+              }"
+              :class="(isFocusedOnCircleOf(klass)) ? 'focused': ''"
             >
-              <circle :r="klass.r" fill="#F3F3F4"></circle>
-              <text dy="-2px" font-size="24px" font-weight="700">
+              <div class="circle-value">
                 {{ klass.data.amount }}
-              </text>
-              <text dy="12px">
+              </div>
+              <div class="circle-text">
                 {{
-                  klass.data.name.length > klass.r / 3.2
-                    ? klass.data.name.substring(0, klass.r / 4) + "..."
-                    : klass.data.name
+                  (klass.data.name.length < klass.r / 3.2 || (!focusedCircleLoading && isFocusedOnCircleOf(klass)))
+                    ? klass.data.name
+                    : `${klass.data.name.substring(0, klass.r / 4)}...`
                 }}
-              </text>
-            </g>
-          </svg>
+              </div>
+            </div>
+          </div>
         </div>
         <b-row class="mt-2 justify-content-between" no-gutters>
           <ControlTypeTile
@@ -353,6 +360,9 @@ export default {
   data: () => {
     return {
       currentCourse: 1,
+      focusedCircle: undefined,
+      focusedCircleLoading: false,
+      focusedCircleRadius: 90
     };
   },
 
@@ -403,7 +413,7 @@ export default {
         });
 
       // Pack the circles inside the viewbox
-      return pack().size([400, 400]).padding(10)(rootHierarchy);
+      return pack().size([400, 400]).padding(8)(rootHierarchy);
     },
 
     amount() {
@@ -445,6 +455,56 @@ export default {
   },
 
   methods: {
+    getTransitionOf(klass){
+      let xTrans = klass.x - klass.r
+      let yTrans = klass.y -  klass.r
+
+      if(this.focusedCircle === undefined){
+        return {x: xTrans, y: yTrans}
+      }
+
+      let focusCircleXtrans = this.focusedCircle.x - this.focusedCircleRadius
+      let focusCircleYtrans = this.focusedCircle.y - this.focusedCircleRadius
+
+      if(this.focusedCircle.x - this.focusedCircleRadius < 0){
+        focusCircleXtrans = 0
+      }
+      if(this.focusedCircle.y - this.focusedCircleRadius < 0){
+        focusCircleYtrans = 0
+      }
+
+      if(this.focusedCircle.x + this.focusedCircleRadius > 400){
+        focusCircleXtrans = 450 - (this.focusedCircleRadius * 2)
+      }
+      if(this.focusedCircle.y + this.focusedCircleRadius > 400){
+        focusCircleYtrans = 400 - (this.focusedCircleRadius * 2)
+      }
+
+      if(this.isFocusedOnCircleOf(klass)){
+        return {x: focusCircleXtrans, y: focusCircleYtrans}
+      }
+
+      let rDiff = (this.focusedCircleRadius - this.focusedCircle.r)
+      let xDiff = klass.x - this.focusedCircle.x
+      let yDiff = klass.y - this.focusedCircle.y
+
+      xTrans += xDiff/2 * (rDiff / Math.abs(xDiff)) * Math.sqrt(400-xDiff)/20
+      yTrans += yDiff/2 * (rDiff / Math.abs(yDiff)) * Math.sqrt(400-yDiff)/20
+
+      return {x: xTrans, y: yTrans}
+    },
+    isFocusedOnCircleOf(klass){
+      return this.focusedCircle && this.focusedCircle.data.name === klass.data.name
+    },
+    setFocusedCircle(klass) {
+      if(this.focusedCircle === undefined) {
+        this.focusedCircle = klass
+        this.focusedCircleLoading = true
+        setTimeout(() => {
+          this.focusedCircleLoading = false
+        }, 300)
+      }
+    },
     getModal(id) {
       this.$store.dispatch("modules/trajectory/getDiscipline", id);
     },
@@ -480,32 +540,51 @@ svg {
   margin: 0 auto;
 }
 
-.circles {
-  transition: transform 0.2s ease-in-out;
-  text-anchor: middle;
-  font-weight: 400;
-  font-size: 10px;
+.stats-circles{
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
 }
 
-circle {
-  transition: 0.3s;
+.circle {
+  position: absolute;
+  transition: all 0.3s ease-in-out, z-index 0s;
+  transform-origin: center;
+  font-weight: 400;
+  font-size: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #F3F3F4;
   z-index: 1;
 }
 
-text {
-  transition: 0.3s;
+.circle-value{
+  background: none;
+  font-size: 24px;
+  font-weight: 700;
 }
 
-.circles:hover circle {
-  transition: 0.3s;
-  /* fill: #8596ed; */
-  /* transform: scale(1.3);
-  z-index: 1000; */
+.circle-text{
+  max-width: calc(100% - 8px);
+  text-align: center;
 }
 
-.circles:hover text {
-  transition: 0.3s;
-  fill: white;
+.circle.focused {
+  z-index: 2;
+  /*left: calc(50% - 150px) !important;*/
+  /*top: calc(50% - 150px) !important;*/
+  /*transform: translate(calc(50% - 150px), calc(50% - 150px)) !important;*/
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  width: 180px !important;
+  height: 180px !important;
+  color: white;
 }
 
 .klass-text {
