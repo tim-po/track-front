@@ -241,7 +241,15 @@
           <p class="text-center modal-col-header">{{ courseNumberFromQuery }} курс</p>
           <div class="discipline-card-modal mx-auto">
             {{ discipline.name }}
+            <button class = "discipline-card-modal__open-btn" @click="(e) => e.target.parentNode.classList.toggle('visible')"/>
+            <div class="discipline-card-additionally mx-auto">
+              <div class="discipline-card-additionally__item"
+                   v-for="discAdd in discipline.replacement_options">
+                {{discAdd.name}}
+              </div>
+            </div>
           </div>
+
         </b-col>
         <b-col class="justify-content-center d-flex flex-column">
           <p
@@ -325,7 +333,7 @@
           v-if="discipline.prerequisites.length > 0"
           class="modal-keywords-header"
         >
-          Пригодится при изученииее
+          Пригодится при изучении
         </p>
         <b-row no-gutters>
           <div
@@ -347,7 +355,7 @@ import CourseSelector from "@/components/Trajectory/CourseSelector";
 import Diploma from "../../components/Trajectory/Diploma";
 
 export default {
-  // TODO: модалка: центрировать, добавить крестик как в дизайне, сделать цвет тегов как в дизайне (20% прозрачность), сделать заголовки как в дизайне, добавить выпадашку как в дизайне, по id из поля replacement_options
+  // TODO: + модалка: центрировать, + добавить крестик как в дизайне, + сделать цвет тегов как в дизайне (20% прозрачность), сделать заголовки как в дизайне, добавить выпадашку как в дизайне, по id из поля replacement_options
 
   name: "TrajectoryPage",
 
@@ -818,10 +826,54 @@ svg {
   background: #ffffff;
   border-radius: 8px;
   max-width: 240px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  grid-column-gap: 16px;
+  align-items: center;
+}
+.discipline-card-additionally{
+  position: absolute;
+  top:calc(100% + 8px);
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  width: 100%;
+  padding: 0 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 26px 11px rgba(100, 53, 165, 0.01), 0px 15px 9px rgba(100, 53, 165, 0.03), 0px 7px 7px rgba(100, 53, 165, 0.05), 0px 0px 4px rgba(100, 53, 165, 0.06), 0px 0px 0px rgba(100, 53, 165, 0.06);
+  font-size: 14px;
+
+  transition: transform 0.15s linear, opacity 0.12s linear;
+  opacity: 0;
+  transform: translate(0,-20px);
+}
+.discipline-card-modal.visible .discipline-card-additionally{
+  transition: transform 0.2s linear, opacity 0.1s linear;
+  opacity: 1;
+  transform: none;
+
+}
+.discipline-card-additionally__item{
+  padding: 16px 0;
+  border-bottom: 1px solid #E7E8EE;
 }
 
+.discipline-card-additionally__item:last-child{
+  border-bottom:none;
+}
 .discipline-modal {
   border-radius: 20px;
+
+}
+.discipline-card-modal__open-btn{
+  background: url("../../static/arrowBottom.svg");
+  width: 24px;
+  height: 24px;
+  border: none;
 }
 
 .discipline-modal .modal-body {

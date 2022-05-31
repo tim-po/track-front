@@ -26,6 +26,7 @@
         </div>
       </b-row>
       <div class="mt-3 trajectories-card__courses-row">
+        <button class="scroll-btn" @click = 'scrollToRight'/>
         <b-card
           class="course-card mr-3"
           :class="'trajectories-bg-' + index"
@@ -95,8 +96,8 @@ import ControlTypeTile from "@/components/ControlTypeTile";
 import PercentProgress from "@/components/PercentProgress";
 
 export default {
-  // TODO: убрать скролбар, добавить стрелку как в дизайне, по ней smooth scroll до конца следующей карточки
-  // TODO: карточка курса кликабельная по ней переход на курс
+  // + TODO: убрать скролбар, добавить стрелку как в дизайне, по ней smooth scroll до конца следующей карточки
+  // + TODO: карточка курса кликабельная по ней переход на курс
   layout: "grayLogoRight",
   name: "Trajectories",
 
@@ -126,7 +127,10 @@ export default {
         query: { id: trajectory.id, course: course },
       });
     },
-
+    scrollToRight(event){
+      event.preventDefault()
+      event.target.parentNode.scrollLeft += 460
+    }
     // coverage (trajectory) {
     //   let coverage = 0;
     //   let count = 0;
@@ -202,8 +206,11 @@ export default {
 .trajectories-card__courses-row {
   display: flex;
   overflow-x: auto;
+  scroll-behavior: smooth;
 }
-
+.trajectories-card__courses-row::-webkit-scrollbar {
+  width: 0;
+}
 .course-card {
   border: none;
   box-shadow: none;
@@ -286,5 +293,21 @@ export default {
 }
 .hidden > * {
   height: 0;
+}
+
+.scroll-btn{
+  position: absolute;
+  background-color: #ffffff;
+  background-image: url("../../static/arrowRight.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 1000;
+  right:8px;
+  top: calc(50% - 40px);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0px 26px 11px rgba(100, 53, 165, 0.01), 0px 15px 9px rgba(100, 53, 165, 0.03), 0px 7px 7px rgba(100, 53, 165, 0.05), 0px 0px 4px rgba(100, 53, 165, 0.06), 0px 0px 0px rgba(100, 53, 165, 0.06);
 }
 </style>

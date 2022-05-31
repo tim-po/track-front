@@ -111,6 +111,7 @@
           </b-row>
         </div>
       </div>
+
     </div>
 
     <div class="bottom-buttons" :class="isEditing ? 'editing' : ''">
@@ -121,6 +122,7 @@
         Мне все нравится
       </button>
     </div>
+    <LoadingScreen header="Подбираем траектории" :is-loading="isLoading"/>
   </div>
 </template>
 
@@ -128,7 +130,7 @@
 import Keyword from "@/components/Keyword";
 
 export default {
-  // TODO: добавить экран загрузки
+  // + TODO: добавить экран загрузки
   name: "KeywordsPage",
 
   components: {
@@ -142,6 +144,7 @@ export default {
       isEditing: false,
       isSearching: false,
       requiredWordsLimit: 0,
+      isLoading: false
     };
   },
 
@@ -245,6 +248,7 @@ export default {
     },
 
     async sendKeywords() {
+      this.isLoading = true;
       await this.$store.dispatch("modules/keywords/sendKeywords");
       this.$router.push({
         path: "/trajectories",
