@@ -21,7 +21,7 @@
         ITMO.TRACK – Персональные образовательные траектории
       </span>
     </section>
-    <section class="info d-flex mt-3">
+    <section class="info d-flex mt-3" id = 'scrollToAbout'>
       <div class="hello-card flex-grow-0 mr-3">
         <div class="text-center">
           <img src="/Wave.svg" alt="">
@@ -66,15 +66,18 @@
 </template>
 
 <script>
+import {scroller} from 'vue-scrollto/src/scrollTo'
+
 export default {
-  // TODO: implement scroll using https://github.com/rigor789/vue-scrollto
+  // + TODO: implement scroll using https://github.com/rigor789/vue-scrollto
   name: "landingPage",
 
   layout: 'gray',
 
   methods: {
     scrollToBottom(){
-      window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+      const implementScroll = scroller()
+      implementScroll('#scrollToAbout')
     }
   }
 }

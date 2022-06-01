@@ -140,7 +140,7 @@ import TrajectoryStats from "../../components/Trajectory/TrajectoryStats";
 import DisciplineModal from "../../components/Trajectory/DisciplineModal";
 
 export default {
-  // TODO: модалка: добавить выпадашку как в дизайне, по id из поля replacement_options
+  // TODO: + модалка: центрировать, + добавить крестик как в дизайне, + сделать цвет тегов как в дизайне (20% прозрачность), сделать заголовки как в дизайне, добавить выпадашку как в дизайне, по id из поля replacement_options
 
   name: "TrajectoryPage",
 
