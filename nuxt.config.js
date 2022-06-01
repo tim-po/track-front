@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Trajectories',
+    title: 'ITMO.Track',
     htmlAttrs: {
       lang: 'ru'
     },
@@ -10,7 +10,7 @@ export default {
       {name: 'viewport', content: 'width=device-width, initial-scale=1'}
     ],
     link: [
-      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
+      {rel: 'icon', type: 'image/x-icon', href: '/logo.ico'}
     ]
   },
 

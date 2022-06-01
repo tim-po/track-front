@@ -87,21 +87,17 @@
         <div
           class="modal-keyword mr-2 mb-2"
           :style="
-                'background:' + colors[discipline.class] + '!important'
+                'background:' + colors[discipline.class]+'60' + '!important'
               "
-          v-for="keyword in discipline.keywords_aligned_with_user"
+          v-for="alignedKeyword in discipline.keywords_aligned_with_user"
         >
-          {{ keyword}}
+          {{ alignedKeyword }}
         </div>
-        <div v-for="keyword in discipline.keywords">
+        <div v-for="keyword in [...discipline.keywords].filter(word => !discipline.keywords_aligned_with_user.includes(word) && word !== '')">
           <div
             :style="
                 'background:' + colors[discipline.class]+'20' + '!important'
               "
-            v-show="keyword !== ''"
-            v-if="
-                  !keywordInArray(keyword, discipline.keywords_aligned_with_user)
-                "
             class="mr-2 mb-2 modal-keyword"
           >
             {{ keyword }}
