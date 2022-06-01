@@ -216,7 +216,7 @@
       </button>
       <div
         class="discipline-image row no-gutters"
-        :style="'background:' + colors[discipline.class.name]"
+        :style="'background:' + colors[discipline.class]"
       >
         <b-col class="justify-content-center d-flex flex-column">
           <p
@@ -240,7 +240,9 @@
           <p class="text-center modal-col-header">{{ courseNumberFromQuery }} курс</p>
           <div class="discipline-card-modal mx-auto">
             {{ discipline.name }}
-            <button class = "discipline-card-modal__open-btn" @click="(e) => e.target.parentNode.classList.toggle('visible')"/>
+            <button class = "discipline-card-modal__open-btn"
+                    :style="!discipline.replacement_options.length && 'display:none'"
+                    @click="(e) => e.target.parentNode.classList.toggle('visible')"/>
             <div class="discipline-card-additionally mx-auto">
               <div class="discipline-card-additionally__item"
                    v-for="discAdd in discipline.replacement_options">
@@ -297,7 +299,7 @@
           Полученные знания и навыки -
           <span
             class="modal-keywords-coverage"
-            :style="'color:' + colors[discipline.class.name]"
+            :style="'color:' + colors[discipline.class]"
           >
             Пересечение с ключевыми словами
             {{ Math.round(discipline.keywords_coverage * 100) }}%
@@ -307,7 +309,7 @@
           <div
             class="modal-keyword mr-2 mb-2"
             :style="
-              'background:' + colors[discipline.class.name] + '!important'
+              'background:' + colors[discipline.class] + '!important'
             "
             v-for="keyword in discipline.keywords_aligned_with_user"
           >
@@ -316,7 +318,7 @@
           <div v-for="keyword in discipline.keywords">
             <div
               :style="
-              'background:' + colors[discipline.class.name]+'20' + '!important'
+              'background:' + colors[discipline.class]+'20' + '!important'
             "
               v-show="keyword !== ''"
               v-if="
