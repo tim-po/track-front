@@ -3,9 +3,9 @@
     <div class="professionsContainer">
       <div class="d-flex justify-content-between card-header-width align-items-center">
         <h3 class="profession__title">Выбирай подходящее направление</h3>
-        <button v-b-modal.modal1 class="profession__button mb-4">
-          Не знаю, что мне подходит
-        </button>
+<!--        <button v-b-modal.modal1 class="profession__button mb-4">-->
+<!--          Не знаю, что мне подходит-->
+<!--        </button>-->
       </div>
       <div class="profession__container">
         <button

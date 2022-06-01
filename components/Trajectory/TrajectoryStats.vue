@@ -75,21 +75,25 @@
       />
     </b-row>
     <h6 class="mt-4">Дисциплины</h6>
-    <div class="col trajectory-card mt-1">
-      <b-row class="justify-content-between mb-24" no-gutters
-      >Обязательные
-        <span>{{
+    <div class="disciplines-necessity-col trajectory-card mt-1">
+      <div class="disciplines-necessity-flex">
+        Обязательные
+        <span>
+          {{
             course.necessity_count.necessary
               ? course.necessity_count.necessary
               : 0
-          }}</span></b-row
+          }}
+        </span></div
       >
-      <b-row class="justify-content-between" no-gutters
-      >По выбору
-        <span>{{
+      <div class="disciplines-necessity-flex">
+        По выбору
+        <span>
+          {{
             course.necessity_count.chosen ? course.necessity_count.chosen : 0
-          }}</span>
-      </b-row>
+          }}
+        </span>
+      </div>
     </div>
   </b-col>
 </template>
@@ -230,6 +234,19 @@ export default {
 </script>
 
 <style scoped>
+.disciplines-necessity-col.trajectory-card{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px 12px;
+}
+
+.disciplines-necessity-flex{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .stats-circles{
   width: 100%;
   height: 400px;
@@ -269,9 +286,9 @@ export default {
 .circle.focused {
   transition: all 0.25s ease-in-out, z-index 0s;
   z-index: 2;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   width: 180px !important;
   height: 180px !important;
+  box-shadow: 0px 26px 11px rgba(100, 53, 165, 0.01), 0px 15px 9px rgba(100, 53, 165, 0.03), 0px 7px 7px rgba(100, 53, 165, 0.05), 0px 0px 4px rgba(100, 53, 165, 0.06), 0px 0px 0px rgba(100, 53, 165, 0.06);
   color: white;
 }
 
