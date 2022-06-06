@@ -49,8 +49,8 @@ export default {
   border-radius: 16px;
   transform: scale(1);
   box-sizing: border-box;
-  max-width: 540px;
-  min-width: 440px;
+  /*max-width: 540px;*/
+  /*min-width: 320px;*/
   flex-shrink: 0;
 
   box-shadow: 0 0 0 rgba(181, 181, 197, 0.25);
@@ -89,5 +89,24 @@ export default {
   margin-right: 8px;
   margin-bottom: 8px;
   height: 32px
+}
+@media screen and (max-width: 433px) {
+  .professionCard__keyword {
+    height: inherit;
+    font-size: 10px;
+  }
+  .professionCard__keywords{
+    max-height: inherit;
+    min-height: inherit;
+  }
+  .professionCard__title{
+    text-align: left;
+  }
+  .professionCard img{
+    min-width: 100px;
+  }
+  .professionCard{
+    margin: 0 10px;
+  }
 }
 </style>

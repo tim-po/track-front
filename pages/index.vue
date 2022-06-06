@@ -1,7 +1,7 @@
 <template>
   <div class="container landing pb-5">
     <section class="landing-card">
-      <div class="d-flex">
+      <div class="landing-card-flex">
         <div class="d-flex flex-column justify-content-between">
           <h1 class="main-title">
             Переведем твои желания на язык дисциплин
@@ -21,7 +21,7 @@
         ITMO.TRACK – Персональные образовательные траектории
       </span>
     </section>
-    <section class="info d-flex mt-3" id = 'scrollToAbout'>
+    <section class="info landing-card-flex mt-3" id = 'scrollToAbout'>
       <div class="hello-card flex-grow-0 mr-3">
         <div class="text-center">
           <img src="/Wave.svg" alt="">
@@ -93,7 +93,9 @@ export default {
   border-radius: 1.25rem;
   padding: 70px 51px 55px 4rem;
 }
-
+.landing-card-flex{
+  display: flex;
+}
 .main-title {
   font-weight: 800;
   font-size: 64px;
@@ -189,5 +191,100 @@ export default {
 .final-card-title {
   font-weight: 500;
   font-size: 22px;
+}
+@media screen and (max-width: 988px){
+  #scrollToAbout .hello-card{
+    margin-right: inherit!important;
+  }
+  .landing-card-flex{
+    display: inherit;
+  }
+}
+@media screen and (max-width: 768px){
+  .landing-card{
+    padding: 2.5rem;
+  }
+  .main-title{
+    font-size: 2.5rem;
+  }
+  .main-button{
+    padding: 20px 24px;
+  }
+  .secondary-button{
+    padding: 20px 24px;
+  }
+}
+
+@media screen and (max-width: 575px){
+  .main-title{
+    font-size: 2.1rem;
+  }
+  .secondary-button{
+    padding: 15px 10px;
+    font-size: 20px;
+  }
+  .main-button{
+    font-size: 20px;
+    padding: 15px 10px;
+  }
+}
+@media screen and (max-width: 461px){
+  .main-button{
+    font-size: 17px;
+  }
+  .secondary-button{
+    font-size: 17px;
+  }
+}
+@media screen and (max-width: 375px){
+  .main-title{
+    font-size: 1.8rem;
+  }
+  .info-text{
+    font-size: 16px;
+  }
+  .main-button{
+    font-size: 13px;
+  }
+  .secondary-button{
+    font-size: 13px;
+  }
+}
+@media screen and (max-width: 331px){
+  .main-button{
+    margin-right: inherit!important;
+  }
+}
+
+@media screen and (max-width: 320px){
+  .header-subtext{
+    font-size: 12px;
+  }
+  .main-title{
+    font-size: 22px;
+  }
+  .hello-text{
+    font-size: 14px;
+  }
+  .main-button{
+    font-size: 12px;
+    margin-right: inherit!important;
+  }
+  .secondary-button{
+    font-size: 12px;
+  }
+  .info-title{
+    font-size: 18px;
+  }
+  .info-text{
+    margin-left: 0.5rem!important;
+    font-size: 13px;
+  }
+  .final-card-title{
+    font-size: 18px;
+  }
+  .info-subtext{
+    font-size: 15px;
+  }
 }
 </style>

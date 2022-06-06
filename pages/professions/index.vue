@@ -84,7 +84,7 @@ export default {
   padding: 0 0;
   height: max-content;
   max-width: 540px;
-  min-width: 450px;
+  min-width: 420px;
   flex-shrink: 0;
 }
 
@@ -143,7 +143,6 @@ export default {
 
 .profession__button {
   transition: 0.3s;
-
   align-self: center;
   background: var(--color-5-dark);
   color: white;
@@ -204,5 +203,25 @@ export default {
   background: #F3F3FE;
   color: #7328E2;
   transition: 0.3s;
+}
+
+@media screen and (max-width: 433px){
+  .professionCardButton{
+    min-width: 420px;
+  }
+  .content{
+    padding: 0 10px!important;
+  }
+  .header{
+    padding: 1.5rem 10px!important;
+  }
+  .card-header-width{
+    width: inherit;
+  }
+}
+@media screen and (max-width: 410px){
+  .professionCardButton{
+    min-width: 320px;
+  }
 }
 </style>
