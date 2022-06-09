@@ -69,6 +69,7 @@ export default {
 
   methods: {
     professionChosen(profession) {
+      this.$store.commit('modules/header/setHeaderAnimated')
       this.$store.commit('modules/keywords/setKeywords', profession.related_keywords)
       this.$router.push({path: 'keywords', query: {id: profession.id}})
     }

@@ -158,6 +158,10 @@ export default {
       this.profession.related_keywords
     );
     this.calculateRequiredLimit();
+
+    // trash
+    this.$store.commit('modules/header/setHeaderNotAnimated')
+
   },
 
   computed: {

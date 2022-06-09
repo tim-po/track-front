@@ -1,6 +1,6 @@
 <template>
   <div class="default-layout-container" :style="{'background-color': bgColor}">
-    <TheHeader/>
+    <TheHeader />
     <div class="content">
       <Nuxt/>
     </div>

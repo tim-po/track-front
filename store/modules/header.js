@@ -4,16 +4,24 @@ let mutations = {}
 let actions = {}
 
 state = () => ({
+  isHeaderAnimated: false,
   headerText: '',
   layoutBg: '#FFFFFF'
 })
 
 getters = {
   headerText: (state) => state.headerText,
-  bgColor: (state) => state.layoutBg
+  bgColor: (state) => state.layoutBg,
+  isHeaderAnimated: (state) => state.isHeaderAnimated
 }
 
 mutations = {
+  setHeaderAnimated:(state)=>{
+    state.isHeaderAnimated = true
+  },
+  setHeaderNotAnimated:(state)=>{
+    state.isHeaderAnimated = false
+  },
   setHeaderText: (state, payload) => {
     state.headerText = payload
   },
