@@ -7,7 +7,11 @@
       <div class="backText">{{ headerText }}</div>
       </div>
     </div>
-    <img src="/logo.svg" alt="logo" class="logo" :class="logo ? 'active': 'OnActive'"/>
+<!--    <img src="/logo.svg" alt="logo" class="logo" :class="logo ? 'active': 'OnActive'"/>-->
+    <b-row class="logo" :class="logo ? 'active': 'OnActive'" no-gutters>
+      <img src="/logo.svg" alt="logo" />
+        <p class="mt-3 pl-1">ITMO.TRACK</p>
+    </b-row>
   </div>
   </div>
 </template>
@@ -21,15 +25,17 @@ export default {
       check:false,
       checkText:false,
       logo: null,
-      backText :false
+      backText :false,
+      show:true,
     }
   },
+
   created() {
     if(this.logo===null) {
       if (this.isHeaderAnimated) {
-        console.log(this.isHeaderAnimated)
         this.logo = true
         this.backText = true
+        this.show =!this.show
       } else {
         this.logo = null
         this.backText = null
@@ -90,7 +96,7 @@ export default {
 }
 .logo.active{
   position: absolute;
-  right: 0;
+  right: calc(0% - 70px);
   left: inherit;
   animation-name: slidein;
   animation-duration: 1s;
@@ -101,11 +107,22 @@ export default {
     right: calc(100% - 130px);
   }
   to {
-    right: 0;
+    right: calc(0 - 30px);
   }}
 
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
+}
+.active p{
+  opacity: 1;
+  animation: ani 2.5s forwards;
+}
+.OnActive p{
+  display: none;
+}
+@keyframes ani {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
 }
 </style>
